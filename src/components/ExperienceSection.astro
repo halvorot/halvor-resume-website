@@ -7,6 +7,7 @@ import snowyMountainsBackgroundImage from "../assets/images/snowy-mountains-bg.j
 import wishlyLogo from "../assets/images/wishly-logo.png";
 import hLogo from "../icons/h-logo.svg";
 import certPortalLogo from "../assets/images/cert-portal-logo.svg";
+import wineLotteryLogo from "../assets/images/wine-lottery-logo.svg";
 import ExperienceTimeline from "./ExperienceTimeline.astro";
 
 const optimizedBackgroundImage = await getImage({
@@ -45,6 +46,15 @@ const backgroundImageCss = `url(${optimizedBackgroundImage.src})`;
           image={certPortalLogo}
           imageAlt="Cert Portal logo"
           title="CertPortal"
+          badgeBackgroundClass="bg-dark"
+        />
+      </div>
+      <div class="flex flex-1 justify-center">
+        <BadgeItem
+          href="https://github.com/halvorot/wine-lottery-website"
+          image={wineLotteryLogo}
+          imageAlt="Wine Lottery logo"
+          title="Wine Lottery Website"
           badgeBackgroundClass="bg-dark"
         />
       </div>
