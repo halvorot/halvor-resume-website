@@ -8,6 +8,7 @@ import wishlyLogo from "../assets/images/wishly-logo.png";
 import hLogo from "../icons/h-logo.svg";
 import certPortalLogo from "../assets/images/cert-portal-logo.svg";
 import wineLotteryLogo from "../assets/images/wine-lottery-logo.svg";
+import homelabIcon from "../assets/images/homelab-icon";
 import ExperienceTimeline from "./ExperienceTimeline.astro";
 
 const optimizedBackgroundImage = await getImage({
@@ -55,6 +56,15 @@ const backgroundImageCss = `url(${optimizedBackgroundImage.src})`;
           image={wineLotteryLogo}
           imageAlt="Wine Lottery logo"
           title="Wine Lottery Website"
+          badgeBackgroundClass="bg-dark"
+        />
+      </div>
+      <div class="flex flex-1 justify-center">
+        <BadgeItem
+          href="https://github.com/halvorot/home-lab"
+          image={homelabIcon}
+          imageAlt="Homelab logo"
+          title="Homelab"
           badgeBackgroundClass="bg-dark"
         />
       </div>
