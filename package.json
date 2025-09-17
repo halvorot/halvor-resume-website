@@ -13,7 +13,7 @@
     "node": ">=18.18.0"
   },
   "dependencies": {
-    "@astrojs/sitemap": "3.5.1",
+    "@astrojs/sitemap": "3.6.0",
     "@astrojs/solid-js": "4.4.4",
     "@astrojs/tailwind": "5.1.5",
     "@iconify-json/bi": "^1.1.22",
