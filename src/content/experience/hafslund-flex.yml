@@ -3,4 +3,4 @@ heading: Hafslund
 subHeading: Senior Backend Developer
 description: Development of backend services for the Hafslund Flex platform. 
   The platform enables smart power management and flexibility trading.
-tags: ["Kotlin", "AWS", "Serverless", "Energy flexibility", "Energy markets"]
+tags: ["Kotlin", "Go", "AWS", "Serverless", "Energy flexibility", "Energy markets"]
