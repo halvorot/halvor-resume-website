@@ -16,7 +16,7 @@
     "@astrojs/sitemap": "3.6.0",
     "@astrojs/solid-js": "5.1.1",
     "@astrojs/tailwind": "6.0.2",
-    "@iconify-json/bi": "1.1.22",
+    "@iconify-json/bi": "1.2.6",
     "astro": "5.14.4",
     "astro-icon": "1.1.5",
     "solid-js": "1.9.9",
