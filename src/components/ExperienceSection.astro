@@ -7,8 +7,8 @@ import snowyMountainsBackgroundImage from "../assets/images/snowy-mountains-bg.j
 import wishlyLogo from "../assets/images/wishly-logo.png";
 import hLogo from "../icons/h-logo.svg";
 import certPortalLogo from "../assets/images/cert-portal-logo.svg";
-import wineLotteryLogo from "../assets/images/wine-lottery-logo.svg";
-import homelabIcon from "../assets/images/IMG_3795.png";
+import wineLotteryLogo from "../assets/images/wine-lottery-icon.svg";
+import homelabIcon from "../assets/images/homelab-icon.svg";
 import ExperienceTimeline from "./ExperienceTimeline.astro";
 
 const optimizedBackgroundImage = await getImage({
@@ -30,6 +30,7 @@ const backgroundImageCss = `url(${optimizedBackgroundImage.src})`;
           image={wishlyLogo}
           imageAlt="Wishly logo"
           title="Wishly - The Wishlist App"
+          customBackgroundColor="#141414"
         />
       </div>
       <div class="flex flex-1 justify-center">

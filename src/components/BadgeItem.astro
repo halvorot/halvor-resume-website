@@ -15,6 +15,7 @@ interface Props {
   imageAlt: string;
   title?: string;
   badgeBackgroundClass?: string;
+  customBackgroundColor?: string;
 }
 
 const {
@@ -23,6 +24,7 @@ const {
   imageAlt,
   title,
   badgeBackgroundClass = "bg-light",
+  customBackgroundColor,
 } = Astro.props;
 ---
 
@@ -32,9 +34,10 @@ const {
   >
     <div class="relative">
       <div
-        class=`${badgeBackgroundClass} w-24 aspect-square m-1 rounded-full overflow-hidden inline-flex items-center justify-center`
+        class=`${badgeBackgroundClass} w-24 aspect-square m-1 rounded-full overflow-hidden inline-flex items-center justify-center p-4`
+        style={customBackgroundColor ? `background-color: ${customBackgroundColor}` : undefined}
       >
-        <Image src={image} alt={imageAlt} />
+        <Image src={image} alt={imageAlt} class="w-full h-full object-contain" />
       </div>
       <Icon name="bi:box-arrow-up-right" class="absolute right-1 top-0 text-light-accent" />
     </div>
