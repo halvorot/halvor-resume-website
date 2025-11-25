@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" fill="none">
+  <!-- Microphone -->
+  <g transform="translate(60, 100)">
+    <!-- Mic capsule -->
+    <rect x="-20" y="-50" width="40" height="60" rx="20" fill="#E74C3C" stroke="#C0392B" stroke-width="3"/>
+    <!-- Mic stand -->
+    <path d="M -28 10 Q -28 25 0 25 Q 28 25 28 10" stroke="#495057" stroke-width="3" fill="none"/>
+    <line x1="0" y1="25" x2="0" y2="45" stroke="#495057" stroke-width="3"/>
+    <line x1="-15" y1="45" x2="15" y2="45" stroke="#495057" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 100 100 L 140 100" stroke="#495057" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="140,80 180,100 140,120" fill="#495057"/>
+
+  <!-- Simple flowchart box -->
+  <rect x="120" y="50" width="60" height="35" rx="4" fill="#4A90E2" stroke="#2E5C8A" stroke-width="3"/>
+  <rect x="120" y="115" width="60" height="35" rx="4" fill="#4A90E2" stroke="#2E5C8A" stroke-width="3"/>
+</svg>

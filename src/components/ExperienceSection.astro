@@ -9,6 +9,7 @@ import hLogo from "../icons/h-logo.svg";
 import certPortalLogo from "../assets/images/cert-portal-logo.svg";
 import wineLotteryLogo from "../assets/images/wine-lottery-icon.svg";
 import homelabIcon from "../assets/images/homelab-icon.svg";
+import voiceboardIcon from "../assets/images/voiceboard-icon.svg";
 import ExperienceTimeline from "./ExperienceTimeline.astro";
 
 const optimizedBackgroundImage = await getImage({
@@ -66,6 +67,15 @@ const backgroundImageCss = `url(${optimizedBackgroundImage.src})`;
           image={homelabIcon}
           imageAlt="Homelab logo"
           title="Homelab"
+          badgeBackgroundClass="bg-dark"
+        />
+      </div>
+      <div class="flex flex-1 justify-center">
+        <BadgeItem
+          href="https://github.com/halvorot/speech-to-whiteboard"
+          image={voiceboardIcon}
+          imageAlt="VoiceBoard logo"
+          title="VoiceBoard - Speech to Whiteboard"
           badgeBackgroundClass="bg-dark"
         />
       </div>
