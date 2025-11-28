@@ -51,6 +51,8 @@ const halvorBackgroundImageCss = `url(${optimizedHalvorBackgroundImage.src})`;
 </section>
 
 <style define:vars={{ halvorBackgroundImageCss }}>
+  @reference "../styles/global.css";
+
   .ingress strong {
     @apply text-secondary opacity-100;
   }
