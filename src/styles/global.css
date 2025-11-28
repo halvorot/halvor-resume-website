@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  /* Custom colors */
+  --color-primary: #f97316;
+  --color-primary-accent: #ea580c;
+  --color-secondary: #fdba74;
+  --color-secondary-accent: #fb923c;
+  --color-dark: #0a0a0a;
+  --color-dark-accent: #171717;
+  --color-dark-blue: #111724;
+  --color-light: #e2e8f0;
+  --color-light-accent: #cbd5e1;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Custom breakpoint */
+  --breakpoint-xs: 475px;
+}
