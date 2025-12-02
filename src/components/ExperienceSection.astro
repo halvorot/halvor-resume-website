@@ -2,14 +2,7 @@
 import { getImage } from "astro:assets";
 import H1 from "./H1.astro";
 import H2 from "./H2.astro";
-import BadgeItem from "./BadgeItem.astro";
 import snowyMountainsBackgroundImage from "../assets/images/snowy-mountains-bg.jpg";
-import wishlyLogo from "../assets/images/wishly-logo.png";
-import hLogo from "../icons/h-logo.svg";
-import certPortalLogo from "../assets/images/cert-portal-logo.svg";
-import wineLotteryLogo from "../assets/images/wine-lottery-icon.svg";
-import homelabIcon from "../assets/images/homelab-icon.svg";
-import voiceboardIcon from "../assets/images/voiceboard-icon.svg";
 import ExperienceTimeline from "./ExperienceTimeline.astro";
 
 const optimizedBackgroundImage = await getImage({
@@ -23,63 +16,6 @@ const backgroundImageCss = `url(${optimizedBackgroundImage.src})`;
     <H1 preText="My " gradientText="experience" />
     <H2 text="Timeline" />
     <ExperienceTimeline />
-    <H2 text="Personal projects" />
-    <div class="flex flex-wrap justify-evenly gap-7">
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/wishly-wishlist-app/tree/main"
-          image={wishlyLogo}
-          imageAlt="Wishly logo"
-          title="Wishly - The Wishlist App"
-          customBackgroundColor="#141414"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/halvorot.github.io"
-          image={hLogo}
-          imageAlt="Halvor Teigen logo"
-          title="This website"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/cert-portal"
-          image={certPortalLogo}
-          imageAlt="Cert Portal logo"
-          title="CertPortal"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/wine-lottery-website"
-          image={wineLotteryLogo}
-          imageAlt="Wine Lottery logo"
-          title="Wine Lottery Website"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/home-lab"
-          image={homelabIcon}
-          imageAlt="Homelab logo"
-          title="Homelab"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/speech-to-whiteboard"
-          image={voiceboardIcon}
-          imageAlt="VoiceBoard logo"
-          title="VoiceBoard - Speech to Whiteboard"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
-    </div>
   </main>
 </section>
 

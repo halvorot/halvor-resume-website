@@ -16,8 +16,8 @@ import SecondaryButton from "./SecondaryButton.astro";
         >Halvor Ø. Teigen</span
       >
     </div>
-    <div class="flex justify-end gap-4 lg:order-2 lg:flex-1">
-      <div class="hidden xs:flex xs:justify-center">
+    <div class="flex justify-end gap-2 lg:order-2 lg:flex-1 lg:gap-4">
+      <div class="hidden lg:flex lg:justify-center">
         <SecondaryButton
           text="Contact on LinkedIn"
           href="https://www.linkedin.com/in/halvor-teigen/"
@@ -59,7 +59,7 @@ import SecondaryButton from "./SecondaryButton.astro";
       id="navbar-cta"
     >
       <ul
-        class="mt-4 flex flex-col bg-transparent p-4 font-medium lg:mt-0 lg:flex-row lg:space-x-8 lg:p-0"
+        class="mt-4 flex flex-col bg-transparent p-4 font-medium lg:mt-0 lg:flex-row lg:space-x-8 md:space-x-4 lg:p-0"
       >
         {
           navData.map((item) => (
@@ -70,13 +70,14 @@ import SecondaryButton from "./SecondaryButton.astro";
                   item.name.toLowerCase() === "contact" ? "_blank" : "_self"
                 }
                 aria-current={item.name.toLowerCase() === "home" && "page"}
+                class="whitespace-nowrap"
               >
                 {item.name}
               </a>
             </li>
           ))
         }
-        <li class="block mt-2 ml-3 xs:ml-0 xs:mt-0 xs:hidden">
+        <li class="mt-2 ml-3 xs:ml-0 xs:mt-0 lg:hidden">
           <SecondaryButton
             text="Contact on LinkedIn"
             href="https://www.linkedin.com/in/halvor-teigen/"

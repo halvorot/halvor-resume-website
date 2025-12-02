@@ -16,6 +16,10 @@ const navData: NavData[] = [
         name: "Experience",
         path: "/#experience"
     },
+    {
+        name: "Side Projects",
+        path: "/#personal-projects"
+    },
 ]
 
 export default navData;
