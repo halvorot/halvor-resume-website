@@ -8,7 +8,7 @@ import hLogo from "../icons/h-logo.svg";
 import certPortalLogo from "../assets/images/cert-portal-logo.svg";
 import wineLotteryLogo from "../assets/images/wine-lottery-icon.svg";
 import homelabIcon from "../assets/images/homelab-icon.svg";
-import voiceboardIcon from "../assets/images/voiceboard-icon.svg";
+import voiceboardLogo from "../assets/images/voiceboard-logo.svg";
 
 const optimizedBackgroundImage = await getImage({
   src: snowyMountainsBackgroundImage,
@@ -20,15 +20,6 @@ const backgroundImageCss = `url(${optimizedBackgroundImage.src})`;
   <main class="m-auto max-w-3xl p-4 text-light">
     <H1 preText="My personal " gradientText="projects" />
     <div class="flex flex-wrap justify-evenly gap-7">
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/wishly-wishlist-app/tree/main"
-          image={wishlyLogo}
-          imageAlt="Wishly logo"
-          title="Wishly - The Wishlist App"
-          customBackgroundColor="#141414"
-        />
-      </div>
       <div class="flex flex-1 justify-center">
         <BadgeItem
           href="https://github.com/halvorot/halvorot.github.io"
@@ -49,6 +40,24 @@ const backgroundImageCss = `url(${optimizedBackgroundImage.src})`;
       </div>
       <div class="flex flex-1 justify-center">
         <BadgeItem
+          href="https://github.com/halvorot/speech-to-whiteboard"
+          image={voiceboardLogo}
+          imageAlt="VoiceBoard logo"
+          title="VoiceBoard - Speech to Whiteboard"
+          badgeBackgroundClass="bg-dark"
+        />
+      </div>
+      <div class="flex flex-1 justify-center">
+        <BadgeItem
+          href="https://github.com/halvorot/wishly-wishlist-app/tree/main"
+          image={wishlyLogo}
+          imageAlt="Wishly logo"
+          title="Wishly - The Wishlist App"
+          customBackgroundColor="#141414"
+        />
+      </div>
+      <div class="flex flex-1 justify-center">
+        <BadgeItem
           href="https://github.com/halvorot/wine-lottery-website"
           image={wineLotteryLogo}
           imageAlt="Wine Lottery logo"
@@ -62,15 +71,6 @@ const backgroundImageCss = `url(${optimizedBackgroundImage.src})`;
           image={homelabIcon}
           imageAlt="Homelab logo"
           title="Homelab"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/speech-to-whiteboard"
-          image={voiceboardIcon}
-          imageAlt="VoiceBoard logo"
-          title="VoiceBoard - Speech to Whiteboard"
           badgeBackgroundClass="bg-dark"
         />
       </div>
