@@ -13,18 +13,18 @@
     "node": ">=18.18.0"
   },
   "dependencies": {
-    "@astrojs/sitemap": "3.7.1",
+    "@astrojs/sitemap": "3.7.3",
     "@astrojs/solid-js": "6.0.1",
     "@iconify-json/bi": "1.2.7",
-    "@tailwindcss/vite": "4.2.1",
+    "@tailwindcss/vite": "4.3.1",
     "astro": "5.16.10",
     "astro-icon": "1.1.5",
-    "solid-js": "1.9.11",
-    "tailwindcss": "4.2.1"
+    "solid-js": "1.9.13",
+    "tailwindcss": "4.3.1"
   },
   "devDependencies": {
-    "prettier": "3.8.1",
+    "prettier": "3.8.4",
     "prettier-plugin-astro": "0.14.1",
-    "prettier-plugin-tailwindcss": "0.7.2"
+    "prettier-plugin-tailwindcss": "0.8.0"
   }
 }
