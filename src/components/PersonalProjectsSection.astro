@@ -1,7 +1,8 @@
 ---
 import { getImage } from "astro:assets";
 import H1 from "./H1.astro";
-import BadgeItem from "./BadgeItem.astro";
+import H2 from "./H2.astro";
+import ProjectCard from "./ProjectCard.astro";
 import snowyMountainsBackgroundImage from "../assets/images/snowy-mountains-bg.jpg";
 import wishlyLogo from "../assets/images/wishly-logo.png";
 import hLogo from "../icons/h-logo.svg";
@@ -14,75 +15,97 @@ const optimizedBackgroundImage = await getImage({
   src: snowyMountainsBackgroundImage,
 });
 const backgroundImageCss = `url(${optimizedBackgroundImage.src})`;
+
+const projects = [
+  {
+    title: "Homelab docker",
+    description:
+      "My self-hosted home infrastructure for learning, operations, and running services I rely on day to day.",
+    repoUrl: "https://github.com/halvorot/homelab-docker",
+    liveUrl: "https://homelab.halvorteigen.no",
+    image: homelabIcon,
+    imageAlt: "Homelab logo",
+    featured: true,
+  },
+  {
+    title: "This website",
+    description:
+      "My resume and portfolio site, built to present my experience with a fast, focused Astro frontend.",
+    repoUrl: "https://github.com/halvorot/halvorot.github.io",
+    liveUrl: "https://halvorteigen.no",
+    image: hLogo,
+    imageAlt: "Halvor Teigen logo",
+  },
+  {
+    title: "CertPortal",
+    description:
+      "A portal for browsing and tracking certifications, while also reading and leaving reviews.",
+    repoUrl: "https://github.com/halvorot/cert-portal",
+    image: certPortalLogo,
+    imageAlt: "Cert Portal logo",
+  },
+  {
+    title: "VoiceBoard",
+    description:
+      "An experiment in turning spoken input into whiteboard-style output for faster idea capture.",
+    repoUrl: "https://github.com/halvorot/speech-to-whiteboard",
+    liveUrl: "https://voiceboard.halvorteigen.no",
+    image: voiceboardLogo,
+    imageAlt: "VoiceBoard logo",
+  },
+  {
+    title: "Wishly",
+    description:
+      "A wishlist app concept for collecting, organizing, and sharing gift ideas in one place.",
+    repoUrl: "https://github.com/halvorot/wishly-wishlist-app/tree/main",
+    image: wishlyLogo,
+    imageAlt: "Wishly logo",
+    customLogoBackgroundColor: "#141414",
+  },
+  {
+    title: "Wine Lottery Website",
+    description:
+      "A lightweight website for a wine lottery concept with a simple, public-facing presentation layer.",
+    repoUrl: "https://github.com/halvorot/wine-lottery-website",
+    liveUrl: "https://vinlotteri.halvorteigen.no",
+    image: wineLotteryLogo,
+    imageAlt: "Wine Lottery logo",
+  },
+  {
+    title: "Homelab k8s",
+    description:
+      "My earlier Kubernetes-based homelab setup, kept as a reference after being decommissioned.",
+    repoUrl: "https://github.com/halvorot/homelab-k8s",
+    image: homelabIcon,
+    imageAlt: "Homelab logo",
+    status: "decommissioned" as const,
+  },
+];
+
+const featuredProject = projects.find((project) => project.featured);
+const standardProjects = projects
+  .filter((project) => !project.featured)
+  .sort((left, right) => Number(Boolean(right.liveUrl)) - Number(Boolean(left.liveUrl)));
 ---
 
 <section id="personal-projects" class="bg-image-section pb-20">
-  <main class="m-auto max-w-3xl p-4 text-light">
+  <main class="m-auto max-w-5xl p-4 text-light">
     <H1 preText="My personal " gradientText="projects" />
-    <div class="flex flex-wrap justify-evenly gap-7">
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/halvorot.github.io"
-          image={hLogo}
-          imageAlt="Halvor Teigen logo"
-          title="This website"
-          badgeBackgroundClass="bg-dark"
-        />
+    <div class="mx-auto mb-14 max-w-2xl text-center">
+      <p class="text-base leading-7 text-light-accent">
+        A handfull of personal projects I have worked on to learn and experiment. 
+        Ranging from self-hosted infrastructure to live web applications.
+      </p>
+    </div>
+
+    {featuredProject && (
+      <div class="mb-8">
+        <ProjectCard {...featuredProject} />
       </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/cert-portal"
-          image={certPortalLogo}
-          imageAlt="Cert Portal logo"
-          title="CertPortal"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/speech-to-whiteboard"
-          image={voiceboardLogo}
-          imageAlt="VoiceBoard logo"
-          title="VoiceBoard - Speech to Whiteboard"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/wishly-wishlist-app/tree/main"
-          image={wishlyLogo}
-          imageAlt="Wishly logo"
-          title="Wishly - The Wishlist App"
-          customBackgroundColor="#141414"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/wine-lottery-website"
-          image={wineLotteryLogo}
-          imageAlt="Wine Lottery logo"
-          title="Wine Lottery Website"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/homelab-k8s"
-          image={homelabIcon}
-          imageAlt="Homelab logo"
-          title="Homelab k8s"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
-      <div class="flex flex-1 justify-center">
-        <BadgeItem
-          href="https://github.com/halvorot/homelab-docker"
-          image={homelabIcon}
-          imageAlt="Homelab logo"
-          title="Homelab docker"
-          badgeBackgroundClass="bg-dark"
-        />
-      </div>
+    )}
+
+    <div class="grid gap-5 md:grid-cols-2">
+      {standardProjects.map((project) => <ProjectCard {...project} />)}
     </div>
   </main>
 </section>
@@ -99,8 +122,11 @@ const backgroundImageCss = `url(${optimizedBackgroundImage.src})`;
     top: 0;
     width: 100%;
     height: 100%;
-    background-image: var(--backgroundImageCss);
-    background-size: cover; /* Adjust as needed */
-    opacity: 0.15; /* Adjust the opacity as needed (0.0 to 1.0) */
+    background-image:
+      linear-gradient(180deg, rgba(10, 10, 10, 0.84), rgba(10, 10, 10, 0.78)),
+      var(--backgroundImageCss);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.22;
   }
 </style>
