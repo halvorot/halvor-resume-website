@@ -1,8 +1,10 @@
-import { z, defineCollection } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 export const collections = {
   'certifications': defineCollection({
-    type: 'data',
+    loader: glob({ pattern: '**/*.yml', base: './src/content/certifications' }),
     schema: ({ image }) => z.object({
       name: z.string(),
       image: image(),
@@ -10,7 +12,7 @@ export const collections = {
     }),
   }),
   'experience': defineCollection({
-    type: 'data',
+    loader: glob({ pattern: '**/*.yml', base: './src/content/experience' }),
     schema: z.object({
       startDate: z.date(),
       endDate: z.date().optional(),
