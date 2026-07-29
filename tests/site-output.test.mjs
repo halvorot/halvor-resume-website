@@ -74,6 +74,9 @@ test("analytics loads only through the consent-controlled script", async () => {
   // Assert
   assert.equal(hasNoScriptTracker, false);
   assert.equal(hasConsentApi, true);
+  assert.match(html, /id="cookie-banner"[^>]*bg-dark-blue\/95/);
+  assert.match(html, /id="decline-cookies"[^>]*cursor-pointer/);
+  assert.match(html, /id="accept-cookies"[^>]*cursor-pointer/);
 });
 
 test("home page keeps its responsive visual contract", async () => {
@@ -96,6 +99,8 @@ test("home page keeps its responsive visual contract", async () => {
   assert.match(html, /--section-background-opacity: 0\.15/);
   assert.match(html, /--section-background-opacity: 0\.22/);
   assert.match(html, /isolation:isolate/);
+  assert.match(html, /bg-dark-blue\/70/);
+  assert.match(html, /bg-dark-blue\/75/);
   assert.match(html, /md:grid-cols-2/);
   assert.match(html, /lg:hidden/);
   assert.match(css, /--color-dark-blue:#111724/);
