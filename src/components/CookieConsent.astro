@@ -1,0 +1,72 @@
+<div
+  id="cookie-banner"
+  class="border-dark-accent bg-dark text-light fixed right-0 bottom-0 z-50 m-2 hidden max-w-lg rounded-lg border-2 shadow-xl 2xl:top-1/2 2xl:right-auto 2xl:bottom-auto 2xl:left-1/2 2xl:-translate-x-1/2 2xl:-translate-y-1/2 2xl:px-10 2xl:py-5"
+  role="dialog"
+  aria-labelledby="cookie-banner-title"
+  aria-describedby="cookie-banner-description"
+>
+  <div class="p-5 py-10 text-center">
+    <p id="cookie-banner-title" class="sr-only">Cookie preferences</p>
+    <p id="cookie-banner-description" class="mb-4 text-sm sm:text-base">
+      We use cookies to analyze our website and make your experience even
+      better. To learn more, see our{" "}
+      <a
+        class="text-secondary hover:text-secondary-accent underline"
+        href="/privacy-policy/"
+      >
+        Privacy Policy.
+      </a>
+    </p>
+
+    <div class="mx-auto">
+      <button
+        id="decline-cookies"
+        type="button"
+        class="text-light hover:bg-dark-accent mr-2 rounded-md bg-transparent px-4 py-2 text-sm transition"
+      >
+        Decline
+      </button>
+      <button
+        id="accept-cookies"
+        type="button"
+        class="bg-primary text-light hover:bg-primary-accent focus:ring-primary-accent/80 mr-3 rounded-lg px-4 py-2 text-center font-medium transition focus:ring-3 focus:outline-none"
+      >
+        Accept
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const banner = document.querySelector<HTMLElement>("#cookie-banner");
+  const acceptButton =
+    document.querySelector<HTMLButtonElement>("#accept-cookies");
+  const declineButton =
+    document.querySelector<HTMLButtonElement>("#decline-cookies");
+
+  const getConsent = () =>
+    document.cookie
+      .split("; ")
+      .find((cookie) => cookie.startsWith("cookie-consent="))
+      ?.split("=")[1];
+
+  const setConsent = (value: "granted" | "denied") => {
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `cookie-consent=${value}; Max-Age=31536000; Path=/; SameSite=Lax${secure}`;
+    banner?.classList.add("hidden");
+  };
+
+  if (!getConsent()) {
+    banner?.classList.remove("hidden");
+  }
+
+  acceptButton?.addEventListener("click", () => {
+    setConsent("granted");
+    window.grantAnalyticsConsent();
+  });
+
+  declineButton?.addEventListener("click", () => {
+    setConsent("denied");
+    window.denyAnalyticsConsent();
+  });
+</script>

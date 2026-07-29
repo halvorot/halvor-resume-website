@@ -1,13 +1,14 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
-import HeroSection from "../components/HeroSection.astro";
 import CapabilitiesSection from "../components/CapabilitiesSection.astro";
 import ExperienceSection from "../components/ExperienceSection.astro";
-import PersonalProjectsSection from "../components/PersonalProjectsSection.astro";
+import HeroSection from "../components/HeroSection.astro";
 import ScrollToTopButton from "../components/ScrollToTopButton.astro";
+import PersonalProjectsSection from "../components/PersonalProjectsSection.astro";
+import { siteConfig } from "../config/site";
+import MainLayout from "../layouts/MainLayout.astro";
 ---
 
-<MainLayout title="Halvor Ødegård Teigen | Senior Software Engineer">
+<MainLayout title={siteConfig.title}>
   <HeroSection />
   <CapabilitiesSection />
   <ExperienceSection />

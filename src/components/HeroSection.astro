@@ -1,73 +1,68 @@
 ---
-import { getImage } from "astro:assets";
-import { Icon } from 'astro-icon/components'
-import H1 from "./H1.astro";
+import { Icon } from "astro-icon/components";
 import halvorBackgroundImage from "../assets/images/halvor-bg.jpg";
-import H2 from "./H2.astro";
-
-const optimizedHalvorBackgroundImage = await getImage({
-  src: halvorBackgroundImage,
-});
-const halvorBackgroundImageCss = `url(${optimizedHalvorBackgroundImage.src})`;
+import BackgroundSection from "./BackgroundSection.astro";
+import GradientHeading from "./GradientHeading.astro";
+import SectionHeading from "./SectionHeading.astro";
 ---
 
-<section class="halvor-bg-section">
-  <main class="text-light m-auto max-w-3xl p-4">
-    <div class="mt-16 flex flex-col items-center pt-2">
-      <H1 preText="Hi, I'm " gradientText="Halvor Ødegård Teigen" />
-      <H2 text="Senior Software Engineer & Platform enthusiast" />
-      <button
-        type="button"
-        class="animate-pulse"
-        aria-label="Scroll down to see more content"
-        onclick="
-          document.getElementById('ingress-box').scrollIntoView({
-            behavior: 'auto',
-            block: 'center',
-            inline: 'center'
-          });
-          "
-      >
-        <Icon name="bi:chevron-compact-down" class="w-10 h-10" />
-      </button>
-    </div>
-    <div
-      id="ingress-box"
-      class="bg-dark mb-24 mt-10 flex flex-col items-center justify-center rounded-xl px-3 py-12 text-center md:mt-12 md:p-16"
+<BackgroundSection
+  image={halvorBackgroundImage}
+  opacity={0.2}
+  position="top"
+  contentClass="m-auto max-w-3xl p-4 text-light"
+>
+  <div class="mt-16 flex flex-col items-center pt-2">
+    <GradientHeading
+      level={1}
+      preText="Hi, I'm "
+      gradientText="Halvor Ødegård Teigen"
+    />
+    <SectionHeading
+      level={2}
+      text="Senior Software Engineer & Platform enthusiast"
+    />
+    <button
+      type="button"
+      class="animate-pulse"
+      aria-label="Scroll down to see more content"
+      data-scroll-to-ingress
     >
-      <Icon name="h-logo" class="mb-10 w-16 h-16" />
-      <p class="ingress">
-        As a software engineer with the <strong>everything-can-be-learned</strong> mentality, 
-        I see every project as an opportunity to further develop my skills and knowledge. 
-        I am dedicated to producing work that I am proud of, and I strive to deliver the best <strong>quality</strong> possible. 
-        I value collaboration and believe that teamwork and <strong>knowledge sharing</strong> is the key to success.
-      </p>
-    </div>
-  </main>
-</section>
+      <Icon name="bi:chevron-compact-down" class="h-10 w-10" />
+    </button>
+  </div>
+  <div
+    id="ingress-box"
+    class="bg-dark mt-10 mb-24 flex flex-col items-center justify-center rounded-xl px-3 py-12 text-center md:mt-12 md:p-16"
+  >
+    <Icon name="h-logo" class="mb-10 h-16 w-16" />
+    <p class="ingress">
+      As a software engineer with the{" "}
+      <strong>everything-can-be-learned</strong> mentality, I see every project as
+      an opportunity to further develop my skills and knowledge. I am dedicated to
+      producing work that I am proud of, and I strive to deliver the best{" "}
+      <strong>quality</strong> possible. I value collaboration and believe that teamwork
+      and <strong>knowledge sharing</strong> is the key to success.
+    </p>
+  </div>
+</BackgroundSection>
 
-<style define:vars={{ halvorBackgroundImageCss }}>
+<style>
   @reference "../styles/global.css";
 
   .ingress strong {
     @apply text-secondary opacity-100;
   }
-
-  .halvor-bg-section {
-    position: relative;
-  }
-
-  .halvor-bg-section::before {
-    content: "";
-    position: absolute;
-    z-index: -10;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-position: top;
-    background-image: var(--halvorBackgroundImageCss);
-    background-size: cover;
-    background-repeat: no-repeat;
-    opacity: 0.2;
-  }
 </style>
+
+<script>
+  document
+    .querySelector<HTMLButtonElement>("[data-scroll-to-ingress]")
+    ?.addEventListener("click", () => {
+      document.getElementById("ingress-box")?.scrollIntoView({
+        behavior: "auto",
+        block: "center",
+        inline: "center",
+      });
+    });
+</script>

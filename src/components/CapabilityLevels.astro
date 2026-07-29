@@ -1,60 +1,29 @@
 ---
-interface Capability {
-  name: string;
-  levelPercent: number;
-}
-
-const capabilities: Capability[] = [
-  {
-    name: "KOTLIN",
-    levelPercent: 100,
-  },
-  {
-    name: "JAVA",
-    levelPercent: 100,
-  },
-  {
-    name: "GO",
-    levelPercent: 80,
-  },
-  {
-    name: "AWS",
-    levelPercent: 75,
-  },
-  {
-    name: "KAFKA",
-    levelPercent: 80,
-  },
-  {
-    name: "REACT",
-    levelPercent: 66,
-  },
-  {
-    name: "CI/CD",
-    levelPercent: 66,
-  },
-  {
-    name: "KUBERNETES",
-    levelPercent: 80,
-  }
-];
+import { capabilities } from "../data/capabilities";
 ---
 
 <table class="w-full">
-  {
-    capabilities.map((capability) => (
-      <tr class="h-12 w-full">
-        <td class="text-right text-secondary">
-          <p class="mr-5">{capability.name}</p>
-        </td>
-        <td class="w-full">
-          <div
-            style={{ width: capability.levelPercent + "%" }}
-            class="h-3 bg-primary"
-            aria-label={`${capability.levelPercent}%`}
-          />
-        </td>
-      </tr>
-    ))
-  }
+  <caption class="sr-only">Self-assessed capability levels</caption>
+  <tbody>
+    {
+      capabilities.map((capability) => (
+        <tr class="h-12 w-full">
+          <th scope="row" class="text-secondary text-right font-normal">
+            <p class="mr-5">{capability.name}</p>
+          </th>
+          <td class="w-full">
+            <div
+              style={{ width: capability.levelPercent + "%" }}
+              class="bg-primary h-3"
+              role="progressbar"
+              aria-label={`${capability.name} capability`}
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow={capability.levelPercent}
+            />
+          </td>
+        </tr>
+      ))
+    }
+  </tbody>
 </table>

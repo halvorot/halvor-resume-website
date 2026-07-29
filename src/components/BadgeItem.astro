@@ -1,17 +1,11 @@
 ---
 import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import { Icon } from "astro-icon/components";
-
-type ImageType = {
-  src: string;
-  width: number;
-  height: number;
-  format: "svg" | "png" | "jpg" | "jpeg" | "tiff" | "webp" | "gif" | "avif";
-};
 
 interface Props {
   href: string;
-  image: ImageType;
+  image: ImageMetadata;
   imageAlt: string;
   title?: string;
   badgeBackgroundClass?: string;
@@ -28,18 +22,30 @@ const {
 } = Astro.props;
 ---
 
-<a href={href} target="_blank">
+<a href={href} target="_blank" rel="noreferrer">
   <div
-    class="inline-flex flex-col items-center justify-center text-center leading-5 text-light"
+    class="text-light inline-flex flex-col items-center justify-center text-center leading-5"
   >
     <div class="relative">
       <div
-        class=`${badgeBackgroundClass} w-24 aspect-square m-1 rounded-full overflow-hidden inline-flex items-center justify-center p-4`
-        style={customBackgroundColor ? `background-color: ${customBackgroundColor}` : undefined}
+        class:list={[
+          "m-1 inline-flex aspect-square w-24 items-center justify-center overflow-hidden rounded-full p-4",
+          badgeBackgroundClass,
+        ]}
+        style={customBackgroundColor
+          ? `background-color: ${customBackgroundColor}`
+          : undefined}
       >
-        <Image src={image} alt={imageAlt} class="w-full h-full object-contain" />
+        <Image
+          src={image}
+          alt={imageAlt}
+          class="h-full w-full object-contain"
+        />
       </div>
-      <Icon name="bi:box-arrow-up-right" class="absolute right-1 top-0 text-light-accent" />
+      <Icon
+        name="bi:box-arrow-up-right"
+        class="text-light-accent absolute top-0 right-1"
+      />
     </div>
     <small>{title}</small>
   </div>

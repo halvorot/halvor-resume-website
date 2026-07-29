@@ -1,0 +1,36 @@
+---
+interface Props {
+  text: string;
+  href: string;
+  ariaLabel: string;
+  variant?: "primary" | "secondary";
+  class?: string;
+}
+
+const {
+  text,
+  href,
+  ariaLabel,
+  variant = "primary",
+  class: className,
+  ...rest
+} = Astro.props;
+
+const styles = {
+  primary:
+    "mr-3 rounded-lg bg-primary px-4 py-2 text-center text-sm font-medium text-light transition hover:bg-primary-accent focus:outline-none focus:ring-4 focus:ring-primary-accent/80 md:mr-0",
+  secondary:
+    "rounded-lg bg-light-accent/10 px-4 py-2 text-center text-sm font-medium text-light-accent transition hover:bg-light-accent/5 focus:outline-none focus:ring-2 focus:ring-light-accent/20 md:mr-0",
+};
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noreferrer"
+  aria-label={ariaLabel}
+  class:list={["inline-block", styles[variant], className]}
+  {...rest}
+>
+  {text}
+</a>

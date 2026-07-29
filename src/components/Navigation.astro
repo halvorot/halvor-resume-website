@@ -1,39 +1,45 @@
 ---
-import PrimaryButton from "./PrimaryButton.astro";
-import { Icon } from 'astro-icon/components'
+import { Icon } from "astro-icon/components";
+import { siteConfig } from "../config/site";
+import { navigation } from "../data/navigation";
+import LinkButton from "./LinkButton.astro";
 
-import navData from "../data/navData";
-import SecondaryButton from "./SecondaryButton.astro";
+const isHomePage = Astro.url.pathname === "/";
 ---
 
-<nav class="absolute z-50 w-full bg-dark bg-opacity-40 backdrop-blur-2xl">
+<nav
+  aria-label="Main navigation"
+  class="bg-dark bg-opacity-40 absolute z-50 w-full backdrop-blur-2xl"
+>
   <div
     class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between gap-4 p-4"
   >
     <div class="flex items-center lg:flex-1">
-      <Icon name="h-logo" class="mr-3 w-10 h-10" />
-      <span class="hidden text-2xl font-semibold capitalize text-light sm:block"
-        >Halvor Ø. Teigen</span
+      <Icon name="h-logo" class="mr-3 h-10 w-10" />
+      <span
+        class="text-light hidden text-2xl font-semibold capitalize sm:block"
       >
+        {siteConfig.shortName}
+      </span>
     </div>
     <div class="flex justify-end gap-2 lg:order-2 lg:flex-1 lg:gap-4">
       <div class="hidden lg:flex lg:justify-center">
-        <SecondaryButton
+        <LinkButton
           text="Contact on LinkedIn"
-          href="https://www.linkedin.com/in/halvor-teigen/"
+          href={siteConfig.links.linkedin}
           ariaLabel="Contact me on LinkedIn"
+          variant="secondary"
         />
       </div>
-      <PrimaryButton
+      <LinkButton
         text="Download CV"
-        href="https://raw.githubusercontent.com/halvorot/halvor-cv-latex/refs/heads/main/halvor-cv-english.pdf"
+        href={siteConfig.links.cv}
         ariaLabel="Download CV"
       />
       <button
         id="menu-btn"
-        data-collapse-toggle="navbar-cta"
         type="button"
-        class="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-light hover:bg-dark-accent/30 focus:outline-none focus:ring-2 focus:ring-light-accent/10 lg:hidden"
+        class="text-light hover:bg-dark-accent/30 focus:ring-light-accent/10 inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg p-2 text-sm focus:ring-2 focus:outline-none lg:hidden"
         aria-controls="navbar-cta"
         aria-expanded="false"
       >
@@ -59,17 +65,16 @@ import SecondaryButton from "./SecondaryButton.astro";
       id="navbar-cta"
     >
       <ul
-        class="mt-4 flex flex-col bg-transparent p-4 font-medium lg:mt-0 lg:flex-row lg:space-x-8 md:space-x-4 lg:p-0"
+        class="mt-4 flex flex-col bg-transparent p-4 font-medium md:space-x-4 lg:mt-0 lg:flex-row lg:space-x-8 lg:p-0"
       >
         {
-          navData.map((item) => (
-            <li class="block bg-transparent py-2 pl-3 pr-4 text-light hover:text-secondary lg:p-0">
+          navigation.map((item) => (
+            <li class="text-light hover:text-secondary block bg-transparent py-2 pr-4 pl-3 lg:p-0">
               <a
                 href={item.path}
-                target={
-                  item.name.toLowerCase() === "contact" ? "_blank" : "_self"
+                aria-current={
+                  item.name === "Home" && isHomePage ? "page" : undefined
                 }
-                aria-current={item.name.toLowerCase() === "home" && "page"}
                 class="whitespace-nowrap"
               >
                 {item.name}
@@ -77,11 +82,12 @@ import SecondaryButton from "./SecondaryButton.astro";
             </li>
           ))
         }
-        <li class="mt-2 ml-3 xs:ml-0 xs:mt-0 lg:hidden">
-          <SecondaryButton
+        <li class="xs:ml-0 xs:mt-0 mt-2 ml-3 lg:hidden">
+          <LinkButton
             text="Contact on LinkedIn"
-            href="https://www.linkedin.com/in/halvor-teigen/"
+            href={siteConfig.links.linkedin}
             ariaLabel="Contact me on LinkedIn"
+            variant="secondary"
           />
         </li>
       </ul>
@@ -98,33 +104,34 @@ import SecondaryButton from "./SecondaryButton.astro";
 </style>
 
 <script>
-  const menuButton = document.getElementById("menu-btn");
-  const navBarLinksDropdown = document.getElementById("navbar-cta");
-  const navBar = document.querySelector("nav");
-  // Toggle menu hidden when menu button clicked
+  const menuButton = document.querySelector<HTMLButtonElement>("#menu-btn");
+  const menu = document.querySelector<HTMLElement>("#navbar-cta");
+  const navigationElement = document.querySelector<HTMLElement>("nav");
+
+  const setMenuOpen = (open: boolean) => {
+    menu?.classList.toggle("hidden", !open);
+    menuButton?.setAttribute("aria-expanded", String(open));
+  };
+
   menuButton?.addEventListener("click", () => {
-    navBarLinksDropdown?.classList.toggle("hidden");
+    setMenuOpen(menuButton.getAttribute("aria-expanded") !== "true");
   });
 
-  // Hide menu when nav links clicked
-  const navLinks = document.querySelectorAll("nav a");
-  navLinks.forEach((navLink) => {
-    navLink.addEventListener("click", () => {
-      const styles = menuButton && getComputedStyle(menuButton);
-      if (styles?.display !== "none") {
-        navBarLinksDropdown?.classList.toggle("hidden");
-      }
-    });
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setMenuOpen(false));
   });
 
-  // Hide menu if click outside menu/navbar
-  document.documentElement.addEventListener("click", () => {
-    if (!navBarLinksDropdown?.classList.contains("hidden")) {
-      navBarLinksDropdown?.classList.add("hidden");
+  document.documentElement.addEventListener("click", () => setMenuOpen(false));
+  navigationElement?.addEventListener("click", (event) =>
+    event.stopPropagation(),
+  );
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      menuButton?.getAttribute("aria-expanded") === "true"
+    ) {
+      setMenuOpen(false);
+      menuButton?.focus();
     }
-  });
-
-  navBar?.addEventListener("click", (event) => {
-    event.stopPropagation();
   });
 </script>

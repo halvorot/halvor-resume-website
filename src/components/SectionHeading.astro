@@ -1,0 +1,16 @@
+---
+interface Props {
+  level?: 2 | 3;
+  text: string;
+  class?: string;
+}
+
+const { level = 3, text, class: className } = Astro.props;
+const Heading = `h${level}` as const;
+---
+
+<Heading
+  class:list={["mb-12 text-center text-3xl font-light capitalize", className]}
+>
+  {text}
+</Heading>

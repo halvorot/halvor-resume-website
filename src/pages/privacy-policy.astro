@@ -1,12 +1,15 @@
 ---
-import H1 from "../components/H1.astro";
+import GradientHeading from "../components/GradientHeading.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 ---
 
-<MainLayout title="Halvor Teigen">
-  <main class="text-light m-auto max-w-3xl p-4">
-    <div class="mb-10 mt-32">
-      <H1 preText="Privacy " gradientText="Policy" />
+<MainLayout
+  title="Privacy Policy | Halvor Teigen"
+  description="Privacy and analytics information for halvorteigen.no."
+>
+  <div class="text-light m-auto max-w-3xl p-4">
+    <div class="mt-32 mb-10">
+      <GradientHeading level={1} preText="Privacy " gradientText="Policy" />
       <p>
         We use Google Analytics to collect analytics data from the website. We
         need this data to understand how you use our website so we can improve
@@ -33,5 +36,5 @@ import MainLayout from "../layouts/MainLayout.astro";
         any questions.
       </p>
     </div>
-  </main>
+  </div>
 </MainLayout>

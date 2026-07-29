@@ -1,12 +1,18 @@
 ---
-import H1 from "../components/H1.astro";
-import H2 from "../components/H2.astro";
+import GradientHeading from "../components/GradientHeading.astro";
+import SectionHeading from "../components/SectionHeading.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 ---
 
-<MainLayout title="Page not found | Halvor Teigen">
-  <main class="text-light m-auto max-w-3xl p-4 pt-20">
-    <H1 preText="Page " gradientText="not found" />
-    <H2 text="Sorry, this page was not found or hasn't been created yet." />
-  </main>
+<MainLayout
+  title="Page not found | Halvor Teigen"
+  description="The requested page could not be found."
+>
+  <div class="text-light m-auto max-w-3xl p-4 pt-20">
+    <GradientHeading level={1} preText="Page " gradientText="not found" />
+    <SectionHeading
+      level={2}
+      text="Sorry, this page was not found or hasn't been created yet."
+    />
+  </div>
 </MainLayout>

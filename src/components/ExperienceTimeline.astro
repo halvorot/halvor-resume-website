@@ -16,16 +16,16 @@ const orderedExperiences = [...experiences].sort((a, b) =>
       return (
         <div class="experience-item">
           <div class="experience-content">
-            <p class="text-lg font-bold leading-6 text-primary">
+            <p class="text-primary text-lg leading-6 font-bold">
               {endDate?.getFullYear() === undefined
                 ? `${startDate.getFullYear()}-`
                 : startDate.getFullYear() === endDate.getFullYear()
                   ? startDate.getFullYear()
                   : `${startDate.getFullYear()}-${endDate.getFullYear()}`}
             </p>
-            <h3 class="mb-3 text-2xl font-light text-light">{heading}</h3>
-            <h4 class="text-lg font-medium text-light">{subHeading}</h4>
-            <p class="text-base text-secondary">{description}</p>
+            <h3 class="text-light mb-3 text-2xl font-light">{heading}</h3>
+            <h4 class="text-light text-lg font-medium">{subHeading}</h4>
+            <p class="text-secondary text-base">{description}</p>
             {tags && (
               <div
                 class={`tagtile-container mt-2 inline-flex flex-wrap items-center gap-1`}
@@ -66,7 +66,7 @@ const orderedExperiences = [...experiences].sort((a, b) =>
   /* VERTICAL LINE */
   .experience-timeline::before {
     content: "";
-    @apply bottom-2 top-7 hidden w-0.5 bg-primary md:left-1/2 md:block;
+    @apply bg-primary top-7 bottom-2 hidden w-0.5 md:left-1/2 md:block;
   }
 
   /* EXPERIENCE ITEMS */
@@ -88,12 +88,12 @@ const orderedExperiences = [...experiences].sort((a, b) =>
   }
 
   .experience-content {
-    @apply m-5 mb-2 xs:max-w-xs;
+    @apply xs:max-w-xs m-5 mb-2;
   }
 
   /* CIRCLES ON VERTICAL LINE */
   .experience-item::after {
     content: "";
-    @apply top-6 hidden h-4 w-4 rounded-full bg-primary md:left-[49.05%] md:block;
+    @apply bg-primary top-6 hidden h-4 w-4 rounded-full md:left-[49.05%] md:block;
   }
 </style>

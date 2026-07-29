@@ -1,8 +1,9 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
+import { siteConfig } from "../config/site";
 ---
 
-<footer class="bg-dark sticky top-[100vh] bg-opacity-80">
+<footer class="bg-dark bg-opacity-80 sticky top-[100vh]">
   <div
     class="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center p-4 py-4 text-center sm:flex-row sm:justify-between sm:text-left"
   >
@@ -12,25 +13,26 @@ import { Icon } from 'astro-icon/components';
           class="underline"
           href="https://astro.build/"
           target="_blank"
+          rel="noreferrer"
           >Astro<Icon
             name="bi:box-arrow-up-right"
-            class="inline w-2 h-2 align-super md:w-3 md:h-3"
+            class="inline h-2 w-2 align-super md:h-3 md:w-3"
           /></a
         >
       </p>
     </div>
     <div class="mt-4 flex items-center space-x-5 sm:mt-0">
-      <a href="https://www.linkedin.com/in/halvor-teigen/" target="_blank">
+      <a href={siteConfig.links.linkedin} target="_blank" rel="noreferrer">
         <Icon
-          class="text-light hover:text-light-accent w-6 h-6"
+          class="text-light hover:text-light-accent h-6 w-6"
           aria-hidden="true"
           name="bi:linkedin"
         />
         <span class="sr-only">LinkedIn account</span>
       </a>
-      <a href="https://github.com/halvorot" target="_blank">
+      <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
         <Icon
-          class="text-light hover:text-light-accent w-6 h-6"
+          class="text-light hover:text-light-accent h-6 w-6"
           aria-hidden="true"
           name="bi:github"
         />

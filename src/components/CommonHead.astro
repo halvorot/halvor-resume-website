@@ -1,90 +1,21 @@
 ---
 import { getImage } from "astro:assets";
 import ogImage from "../assets/images/og-image.jpg";
+import { siteConfig } from "../config/site";
 
 interface Props {
   title: string;
+  description?: string | undefined;
 }
-const { title } = Astro.props;
-const description = "Halvor Ødegård Teigen Resume Website";
 
-const optimizedOgImage = await getImage({
-  src: ogImage,
-});
+const { title, description = siteConfig.description } = Astro.props;
+const optimizedOgImage = await getImage({ src: ogImage });
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+const socialImageUrl = new URL(optimizedOgImage.src, Astro.site ?? Astro.url);
+const gtmId = siteConfig.gtmId;
 ---
 
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
-    // global function so that it can be called from anywhere
-    // Updates consent for GA4 to granted if called
-    window.consentGranted = function () {
-      console.log("consent granted");
-      gtag("consent", "update", {
-        ad_storage: "granted",
-        analytics_storage: "granted",
-        functionality_storage: "granted",
-        personalization_storage: "granted",
-        security_storage: "granted",
-      });
-    };
-
-    // Returns value of a cookie named 'cookie-consent'
-    // Should be either "granted" or "denied"
-    window.getCookieConsent = function () {
-      try {
-        const consent = document.cookie.match(/cookie-consent=([^;]+)/)[1];
-        return consent;
-      } catch (error) {
-        return "unk";
-      }
-    };
-
-    if (window.getCookieConsent() == "granted") {
-      // If cookies already approved, set that
-      console.log("default set to granted");
-      gtag("consent", "default", {
-        ad_storage: "granted",
-        analytics_storage: "granted",
-        functionality_storage: "granted",
-        personalization_storage: "granted",
-        security_storage: "granted",
-      });
-    } else {
-      // default all to 'denied'.
-      console.log("default set to denied");
-      gtag("consent", "default", {
-        ad_storage: "denied",
-        analytics_storage: "denied",
-        functionality_storage: "denied",
-        personalization_storage: "denied",
-        security_storage: "denied",
-      });
-    }
-  </script>
-
-  <!-- Google Tag Manager -->
-  <script is:inline>
-    (function (w, d, s, l, i) {
-      console.log("GTM");
-      w[l] = w[l] || [];
-      w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-      var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s),
-        dl = l != "dataLayer" ? "&l=" + l : "";
-      j.async = true;
-      j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-      f.parentNode.insertBefore(j, f);
-    })(window, document, "script", "dataLayer", "GTM-5QF23X8M");
-  </script>
-  <!-- End Google Tag Manager -->
-
-  <!-- HTML Meta Tags -->
   <meta charset="UTF-8" />
   <meta
     name="viewport"
@@ -92,21 +23,80 @@ const optimizedOgImage = await getImage({
   />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="generator" content={Astro.generator} />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="sitemap" href="/sitemap-index.xml" />
 
-  <!-- Facebook Meta Tags -->
-  <meta property="og:url" content={import.meta.env.SITE} />
+  <meta property="og:url" content={canonicalUrl} />
   <meta property="og:type" content="website" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content={optimizedOgImage.src} />
+  <meta property="og:image" content={socialImageUrl} />
 
-  <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content={import.meta.env.SITE} />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content={optimizedOgImage.src} />
+  <meta name="twitter:image" content={socialImageUrl} />
+
+  <script is:inline define:vars={{ gtmId }}>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+
+    function updateConsent(analyticsStorage) {
+      gtag("consent", "update", {
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        analytics_storage: analyticsStorage,
+        functionality_storage: analyticsStorage,
+        personalization_storage: "denied",
+        security_storage: "granted",
+      });
+    }
+
+    function loadTagManager() {
+      if (document.querySelector(`script[data-gtm-id="${gtmId}"]`)) {
+        return;
+      }
+
+      window.dataLayer.push({
+        "gtm.start": Date.now(),
+        event: "gtm.js",
+      });
+
+      const script = document.createElement("script");
+      script.async = true;
+      script.dataset.gtmId = gtmId;
+      script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
+      document.head.append(script);
+    }
+
+    gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+      functionality_storage: "denied",
+      personalization_storage: "denied",
+      security_storage: "granted",
+      wait_for_update: 500,
+    });
+
+    window.grantAnalyticsConsent = function () {
+      updateConsent("granted");
+      loadTagManager();
+    };
+
+    window.denyAnalyticsConsent = function () {
+      updateConsent("denied");
+    };
+
+    if (document.cookie.includes("cookie-consent=granted")) {
+      window.grantAnalyticsConsent();
+    }
+  </script>
 </head>
