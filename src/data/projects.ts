@@ -29,7 +29,7 @@ export const projects = [
     image: homelabIcon,
     imageAlt: "Homelab logo",
     featured: true,
-    technologies: ["Docker"],
+    technologies: ["Docker", "Networking", "Self-hosting"],
   },
   {
     title: "This website",
@@ -67,6 +67,7 @@ export const projects = [
     image: wishlyLogo,
     imageAlt: "Wishly logo",
     customLogoBackgroundColor: "#141414",
+    technologies: ["FlutterFlow", "Firebase", "iOS"],
   },
   {
     title: "Wine Lottery Website",
