@@ -1,8 +1,5 @@
 ---
-import snowyMountainsBackgroundImage from "../assets/images/snowy-mountains-bg.jpg";
 import { projects } from "../data/projects";
-import BackgroundSection from "./BackgroundSection.astro";
-import GradientHeading from "./GradientHeading.astro";
 import ProjectCard from "./ProjectCard.astro";
 
 const featuredProject = projects.find((project) => project.featured);
@@ -14,31 +11,43 @@ const standardProjects = projects
   );
 ---
 
-<BackgroundSection
+<section
   id="personal-projects"
-  image={snowyMountainsBackgroundImage}
-  opacity={0.22}
-  overlay="linear-gradient(180deg, rgba(10, 10, 10, 0.84), rgba(10, 10, 10, 0.78))"
-  class="pb-20"
-  contentClass="m-auto max-w-5xl p-4 text-light"
+  class="projects-section"
+  aria-labelledby="projects-title"
 >
-  <GradientHeading preText="My personal " gradientText="projects" />
-  <div class="mx-auto mb-14 max-w-2xl text-center">
-    <p class="text-light-accent text-base leading-7">
-      A handfull of personal projects I have worked on to learn and experiment.
-      Ranging from self-hosted infrastructure to live web applications.
-    </p>
-  </div>
+  <div class="section-shell py-[var(--space-section)]">
+    <header>
+      <p class="section-kicker">Projects</p>
+      <h2 id="projects-title" class="section-title">Personal projects</h2>
+      <p class="text-light-accent mt-5 max-w-2xl text-lg leading-8">
+        A handful of personal projects for learning and experimentation, ranging
+        from self-hosted infrastructure to live web applications.
+      </p>
+    </header>
 
-  {
-    featuredProject && (
-      <div class="mb-8">
-        <ProjectCard {...featuredProject} />
-      </div>
-    )
+    {
+      featuredProject && (
+        <div class="mt-12">
+          <ProjectCard {...featuredProject} />
+        </div>
+      )
+    }
+
+    <div class="mt-5 grid gap-5 md:grid-cols-2">
+      {standardProjects.map((project) => <ProjectCard {...project} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects-section {
+    background:
+      radial-gradient(
+        circle at 82% 18%,
+        rgb(249 115 22 / 0.08),
+        transparent 28rem
+      ),
+      var(--color-dark-blue);
   }
-
-  <div class="grid gap-5 md:grid-cols-2">
-    {standardProjects.map((project) => <ProjectCard {...project} />)}
-  </div>
-</BackgroundSection>
+</style>

@@ -1,3 +1,5 @@
 name: AWS Solutions Architect
 image: "../../assets/images/badges/badge-aws-solutions-architect.png"
 certificateLink: "https://www.credly.com/badges/40c29299-ec29-4508-a465-856c23a5d26a"
+featured: true
+displayOrder: 1

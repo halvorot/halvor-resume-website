@@ -1,3 +1,5 @@
 name: Azure Developer Associate
 image: "../../assets/images/badges/badge-azure-developer-associate.png"
 certificateLink: "https://www.credly.com/badges/60127103-5740-4b44-baf4-a27b32adc3e1/linked_in_profile"
+featured: true
+displayOrder: 2

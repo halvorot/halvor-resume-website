@@ -1,3 +1,5 @@
 name: Professional Scrum Developer I
 image: "../../assets/images/badges/badge-psd1.png"
 certificateLink: "https://www.credly.com/badges/e071480f-1c71-4914-b9e7-1faf2a5c1c4e/linked_in_profile"
+featured: false
+displayOrder: 15

@@ -1,3 +1,5 @@
-name: Kotlin for Java Devlopers
+name: Kotlin for Java Developers
 image: "../../assets/images/badges/badge-kotlin-logo.png"
 certificateLink: "https://www.coursera.org/account/accomplishments/verify/HWS8N9RTJKK2"
+featured: true
+displayOrder: 3

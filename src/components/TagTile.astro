@@ -7,9 +7,9 @@ interface Props {
 const { text, classes, ...rest } = Astro.props;
 ---
 
-<div
-  class={`bg-dark/60 text-light text-sm px-2 pb-0.5 rounded-md ${classes}`}
+<span
+  class={`border-light-accent/15 bg-light/5 text-light inline-flex rounded-full border px-3 py-1 text-xs ${classes}`}
   {...rest}
 >
   {text}
-</div>
+</span>

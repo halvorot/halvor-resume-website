@@ -3,41 +3,62 @@ import { Icon } from "astro-icon/components";
 import { siteConfig } from "../config/site";
 ---
 
-<footer class="bg-dark bg-opacity-80 sticky top-[100vh]">
-  <div
-    class="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center p-4 py-4 text-center sm:flex-row sm:justify-between sm:text-left"
-  >
-    <div class="text-light text-xs md:text-sm">
+<footer id="contact" class="border-light-accent/10 bg-dark border-t">
+  <div class="section-shell py-16 sm:py-20">
+    <div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+      <div>
+        <p class="section-kicker">Contact</p>
+        <h2
+          class="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-5xl"
+        >
+          Get in touch
+        </h2>
+        <p class="text-light-accent mt-4 max-w-xl">
+          The best way to reach me is on LinkedIn.
+        </p>
+      </div>
+      <a
+        href={siteConfig.links.linkedin}
+        target="_blank"
+        rel="noreferrer"
+        class="interactive-target bg-primary text-dark hover:bg-primary-hover inline-flex items-center justify-center gap-2 rounded-lg px-6 font-bold transition-colors"
+      >
+        Contact on LinkedIn
+        <Icon name="bi:box-arrow-up-right" class="h-4 w-4" aria-hidden="true" />
+      </a>
+    </div>
+
+    <div
+      class="border-light-accent/10 text-light-accent mt-14 flex flex-col gap-4 border-t pt-6 text-xs sm:flex-row sm:items-center sm:justify-between"
+    >
       <p>
         Developed by Halvor Ødegård Teigen using <a
-          class="underline"
+          class="text-light rounded-sm underline underline-offset-4"
           href="https://astro.build/"
           target="_blank"
-          rel="noreferrer"
-          >Astro<Icon
-            name="bi:box-arrow-up-right"
-            class="inline h-2 w-2 align-super md:h-3 md:w-3"
-          /></a
+          rel="noreferrer">Astro</a
         >
       </p>
-    </div>
-    <div class="mt-4 flex items-center space-x-5 sm:mt-0">
-      <a href={siteConfig.links.linkedin} target="_blank" rel="noreferrer">
-        <Icon
-          class="text-light hover:text-light-accent h-6 w-6"
-          aria-hidden="true"
-          name="bi:linkedin"
-        />
-        <span class="sr-only">LinkedIn account</span>
-      </a>
-      <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
-        <Icon
-          class="text-light hover:text-light-accent h-6 w-6"
-          aria-hidden="true"
-          name="bi:github"
-        />
-        <span class="sr-only">GitHub account</span>
-      </a>
+      <div class="flex items-center gap-2">
+        <a
+          href={siteConfig.links.linkedin}
+          target="_blank"
+          rel="noreferrer"
+          class="interactive-target text-light hover:text-primary-hover inline-flex items-center justify-center rounded-lg transition-colors"
+          aria-label="LinkedIn account"
+        >
+          <Icon class="h-5 w-5" aria-hidden="true" name="bi:linkedin" />
+        </a>
+        <a
+          href={siteConfig.links.github}
+          target="_blank"
+          rel="noreferrer"
+          class="interactive-target text-light hover:text-primary-hover inline-flex items-center justify-center rounded-lg transition-colors"
+          aria-label="GitHub account"
+        >
+          <Icon class="h-5 w-5" aria-hidden="true" name="bi:github" />
+        </a>
+      </div>
     </div>
   </div>
 </footer>

@@ -16,11 +16,12 @@ export interface Project {
   featured?: boolean;
   status?: "decommissioned";
   customLogoBackgroundColor?: string;
+  technologies?: string[];
 }
 
 export const projects = [
   {
-    title: "Homelab docker",
+    title: "Homelab Docker",
     description:
       "My docker-based self-hosted home infrastructure for learning, experimenting, and running both self-hosted services and other personal projects.",
     repoUrl: "https://github.com/halvorot/homelab-docker",
@@ -28,6 +29,7 @@ export const projects = [
     image: homelabIcon,
     imageAlt: "Homelab logo",
     featured: true,
+    technologies: ["Docker"],
   },
   {
     title: "This website",
@@ -37,6 +39,7 @@ export const projects = [
     liveUrl: "https://halvorteigen.no",
     image: hLogo,
     imageAlt: "Halvor Teigen logo",
+    technologies: ["Astro"],
   },
   {
     title: "CertPortal",
@@ -54,6 +57,7 @@ export const projects = [
     liveUrl: "https://voiceboard.halvorteigen.no",
     image: voiceboardLogo,
     imageAlt: "VoiceBoard logo",
+    technologies: ["AI"],
   },
   {
     title: "Wishly",
@@ -81,5 +85,6 @@ export const projects = [
     image: homelabIcon,
     imageAlt: "Homelab logo",
     status: "decommissioned",
+    technologies: ["Kubernetes"],
   },
 ] satisfies Project[];

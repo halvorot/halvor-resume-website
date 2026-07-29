@@ -1,3 +1,5 @@
 name: IREB CPRE Foundation
 image: "../../assets/images/badges/badge-ireb-foundation.jpg"
 certificateLink: "/certificates/certificate-ireb.pdf"
+featured: false
+displayOrder: 14

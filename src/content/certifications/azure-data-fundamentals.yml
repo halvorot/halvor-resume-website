@@ -1,3 +1,5 @@
 name: Azure Data Fundamentals
 image: "../../assets/images/badges/badge-azure-data-fundamentals.png"
 certificateLink: "https://www.credly.com/badges/62627148-3d20-4570-9a47-53e1955b271b?source=linked_in_profile"
+featured: false
+displayOrder: 8

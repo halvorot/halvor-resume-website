@@ -4,8 +4,7 @@ export interface NavigationItem {
 }
 
 export const navigation = [
-  { name: "Home", path: "/" },
-  { name: "Capabilities", path: "/#capabilities" },
+  { name: "Skills", path: "/#capabilities" },
   { name: "Experience", path: "/#experience" },
-  { name: "Side Projects", path: "/#personal-projects" },
+  { name: "Projects", path: "/#personal-projects" },
 ] satisfies NavigationItem[];

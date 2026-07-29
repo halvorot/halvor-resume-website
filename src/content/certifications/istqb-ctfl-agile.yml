@@ -1,3 +1,5 @@
 name: ISTQB CTFL Agile
 image: "../../assets/images/badges/badge-istqb-ctfl-agile.png"
 certificateLink: "/certificates/certificate-istqb-agile-foundation.pdf"
+featured: true
+displayOrder: 6
