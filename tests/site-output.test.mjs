@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
+import ts from "typescript";
 import vm from "node:vm";
 
 const homePageUrl = new URL("../dist/index.html", import.meta.url);
@@ -12,8 +13,69 @@ const experienceContentUrl = new URL(
   "../src/content/experience/",
   import.meta.url,
 );
+const navigationComponentUrl = new URL(
+  "../src/components/Navigation.astro",
+  import.meta.url,
+);
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+test("navigation clears the active section when returning to the hero", async () => {
+  // Arrange
+  const source = await readFile(navigationComponentUrl, { encoding: "utf8" });
+  const script = source.match(/<script>([\s\S]*?)<\/script>/)?.[1] ?? "";
+  const compiledScript = ts.transpileModule(script, {
+    compilerOptions: { target: ts.ScriptTarget.ES2022 },
+  }).outputText;
+  class MockHTMLElement {}
+  const sections = ["capabilities", "experience", "personal-projects"].map(
+    (id) => Object.assign(new MockHTMLElement(), { id }),
+  );
+  const links = sections.map(({ id }) => ({
+    dataset: { sectionLink: id },
+    attributes: new Map(),
+    setAttribute(name, value) {
+      this.attributes.set(name, value);
+    },
+    removeAttribute(name) {
+      this.attributes.delete(name);
+    },
+  }));
+  let observerCallback;
+  class MockIntersectionObserver {
+    constructor(callback) {
+      observerCallback = callback;
+    }
+
+    observe() {}
+  }
+  const document = {
+    querySelector: () => null,
+    querySelectorAll: () => links,
+    getElementById: (id) => sections.find((section) => section.id === id),
+    documentElement: { addEventListener() {} },
+    addEventListener() {},
+  };
+  vm.runInNewContext(compiledScript, {
+    document,
+    HTMLElement: MockHTMLElement,
+    IntersectionObserver: MockIntersectionObserver,
+    window: { IntersectionObserver: MockIntersectionObserver },
+  });
+
+  // Act
+  observerCallback([
+    { target: sections[0], isIntersecting: true, intersectionRatio: 0.4 },
+  ]);
+  const activeInSkills = links[0].attributes.get("aria-current");
+  observerCallback([
+    { target: sections[0], isIntersecting: false, intersectionRatio: 0 },
+  ]);
+
+  // Assert
+  assert.equal(activeInSkills, "location");
+  assert.equal(links[0].attributes.has("aria-current"), false);
+});
 
 test("home page keeps ordered landmarks and editorial content", async () => {
   // Arrange
