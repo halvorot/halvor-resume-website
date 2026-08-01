@@ -1,7 +1,7 @@
 startDate: 2024-05-01
 endDate: 2024-09-30
 heading: Barentswatch - project
-subHeading: Fullstack Developer
+subHeading: Full-stack Developer
 description: >
-  Fullstack developer using React and Typescript on the frontend and Java on the backend.
-tags: ["Java", "React", "Typescript", "OpenAPI"]
+  Full-stack developer using React and TypeScript on the frontend and Java on the backend.
+tags: ["Java", "React", "TypeScript", "OpenAPI"]

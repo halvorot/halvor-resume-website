@@ -1,3 +1,5 @@
 name: Professional Scrum with Kanban I
 image: "../../assets/images/badges/badge-psk1.png"
 certificateLink: "https://www.credly.com/badges/44d5be77-955c-4a70-a9c6-b5e671f6205f/public_url"
+featured: false
+displayOrder: 16

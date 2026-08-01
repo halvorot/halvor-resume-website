@@ -1,29 +1,26 @@
 ---
-import { capabilities } from "../data/capabilities";
+import { skillGroups } from "../data/capabilities";
 ---
 
-<table class="w-full">
-  <caption class="sr-only">Self-assessed capability levels</caption>
-  <tbody>
-    {
-      capabilities.map((capability) => (
-        <tr class="h-12 w-full">
-          <th scope="row" class="text-secondary text-right font-normal">
-            <p class="mr-5">{capability.name}</p>
-          </th>
-          <td class="w-full">
-            <div
-              style={{ width: capability.levelPercent + "%" }}
-              class="bg-primary h-3"
-              role="progressbar"
-              aria-label={`${capability.name} capability`}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              aria-valuenow={capability.levelPercent}
-            />
-          </td>
-        </tr>
-      ))
-    }
-  </tbody>
-</table>
+<div class="grid gap-4 md:grid-cols-2">
+  {
+    skillGroups.map((group) => (
+      <article class="border-light-accent/10 bg-dark-accent/75 flex h-full flex-col rounded-[var(--radius-card)] border p-6 shadow-[var(--shadow-card)]">
+        <h3 class="text-xl font-semibold">{group.title}</h3>
+        <p class="text-light-accent mt-2 text-sm leading-6">
+          {group.description}
+        </p>
+        <ul
+          class="mt-6 flex flex-wrap gap-2"
+          aria-label={`${group.title} skills`}
+        >
+          {group.skills.map((skill) => (
+            <li class="border-light-accent/15 bg-light/5 text-light rounded-full border px-3 py-1 text-sm">
+              {skill}
+            </li>
+          ))}
+        </ul>
+      </article>
+    ))
+  }
+</div>

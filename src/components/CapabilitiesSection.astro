@@ -1,21 +1,55 @@
 ---
-import techLightsBackgroundImage from "../assets/images/tech-lights-bg.jpg";
-import BackgroundSection from "./BackgroundSection.astro";
 import CapabilityLevels from "./CapabilityLevels.astro";
 import CertificationsCarousel from "./CertificationsCarousel.astro";
-import GradientHeading from "./GradientHeading.astro";
-import SectionHeading from "./SectionHeading.astro";
 ---
 
-<BackgroundSection
+<section
   id="capabilities"
-  image={techLightsBackgroundImage}
-  opacity={0.2}
-  contentClass="m-auto max-w-3xl p-4 text-light"
+  class="skills-section border-light-accent/10 border-b"
+  aria-labelledby="skills-title"
 >
-  <GradientHeading preText="My main " gradientText="capabilities" />
-  <SectionHeading text="knowledge level in my main capabilities" />
-  <CapabilityLevels />
-  <SectionHeading text="Certifications" class="mt-20" />
-  <CertificationsCarousel />
-</BackgroundSection>
+  <div class="section-shell py-[var(--space-section)]">
+    <header>
+      <p class="section-kicker">Skills & certifications</p>
+      <h2 id="skills-title" class="section-title">Technologies I work with</h2>
+      <p class="text-light-accent mt-5 max-w-2xl text-lg leading-8">
+        Backend technologies and engineering practices I use day to day, plus
+        cloud, platform, and frontend technologies when needed.
+      </p>
+    </header>
+
+    <div class="mt-12">
+      <CapabilityLevels />
+    </div>
+
+    <div class="mt-24">
+      <div
+        class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
+      >
+        <div>
+          <p class="section-kicker">Credentials</p>
+          <h3 class="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+            Featured certifications
+          </h3>
+        </div>
+        <p class="text-light-accent max-w-md text-sm">
+          Selected certifications in cloud, delivery, agile methods, and
+          software testing.
+        </p>
+      </div>
+      <CertificationsCarousel />
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills-section {
+    background:
+      radial-gradient(
+        circle at 88% 16%,
+        rgb(249 115 22 / 0.09),
+        transparent 30rem
+      ),
+      var(--color-dark-blue);
+  }
+</style>

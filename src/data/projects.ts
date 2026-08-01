@@ -16,11 +16,12 @@ export interface Project {
   featured?: boolean;
   status?: "decommissioned";
   customLogoBackgroundColor?: string;
+  technologies?: string[];
 }
 
 export const projects = [
   {
-    title: "Homelab docker",
+    title: "Homelab Docker",
     description:
       "My docker-based self-hosted home infrastructure for learning, experimenting, and running both self-hosted services and other personal projects.",
     repoUrl: "https://github.com/halvorot/homelab-docker",
@@ -28,15 +29,17 @@ export const projects = [
     image: homelabIcon,
     imageAlt: "Homelab logo",
     featured: true,
+    technologies: ["Docker", "Networking", "Self-hosting"],
   },
   {
     title: "This website",
     description:
-      "My resume and portfolio site, built to present my experience with a fast, focused Astro frontend.",
+      "My resume and portfolio site, built with Astro and deployed through an automated delivery pipeline.",
     repoUrl: "https://github.com/halvorot/halvorot.github.io",
     liveUrl: "https://halvorteigen.no",
     image: hLogo,
     imageAlt: "Halvor Teigen logo",
+    technologies: ["Astro"],
   },
   {
     title: "CertPortal",
@@ -54,6 +57,7 @@ export const projects = [
     liveUrl: "https://voiceboard.halvorteigen.no",
     image: voiceboardLogo,
     imageAlt: "VoiceBoard logo",
+    technologies: ["AI"],
   },
   {
     title: "Wishly",
@@ -63,6 +67,7 @@ export const projects = [
     image: wishlyLogo,
     imageAlt: "Wishly logo",
     customLogoBackgroundColor: "#141414",
+    technologies: ["FlutterFlow", "Firebase", "iOS"],
   },
   {
     title: "Wine Lottery Website",
@@ -81,5 +86,6 @@ export const projects = [
     image: homelabIcon,
     imageAlt: "Homelab logo",
     status: "decommissioned",
+    technologies: ["Kubernetes"],
   },
 ] satisfies Project[];

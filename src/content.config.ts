@@ -17,6 +17,8 @@ export const collections = {
         name: z.string().min(1),
         image: image(),
         certificateLink: link,
+        featured: z.boolean(),
+        displayOrder: z.number().int().positive(),
       }),
   }),
   experience: defineCollection({

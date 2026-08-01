@@ -12,8 +12,8 @@ interface Props {
   imageAlt: string;
   featured?: boolean;
   status?: "decommissioned";
-  logoBackgroundClass?: string;
   customLogoBackgroundColor?: string;
+  technologies?: string[];
 }
 
 const {
@@ -23,91 +23,94 @@ const {
   liveUrl,
   image,
   imageAlt,
-  featured = false,
   status,
-  logoBackgroundClass = "bg-dark",
   customLogoBackgroundColor,
+  technologies,
 } = Astro.props;
 ---
 
 <article
-  class:list={[
-    "border-light-accent/10 bg-dark-accent/80 text-light relative overflow-hidden rounded-3xl border p-5 text-left shadow-[0_14px_40px_rgba(0,0,0,0.28)] backdrop-blur-sm",
-    featured
-      ? "grid gap-6 md:grid-cols-[auto_1fr]"
-      : "flex h-full flex-col gap-4",
-  ]}
+  class="border-light-accent/10 bg-dark-accent/75 text-light flex h-full rounded-[var(--radius-card)] border p-6 shadow-[var(--shadow-card)]"
 >
-  <div
-    class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(253,186,116,0.16),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.04),transparent)]"
-  >
-  </div>
+  <div class="flex min-w-0 flex-1 items-stretch gap-4">
+    <div
+      class:list={[
+        "flex h-12 w-12 shrink-0 items-center justify-center self-start overflow-hidden",
+        customLogoBackgroundColor ? "rounded-xl p-2.5" : "p-1",
+      ]}
+      style={customLogoBackgroundColor
+        ? `background-color: ${customLogoBackgroundColor}`
+        : undefined}
+    >
+      <Image
+        src={image}
+        alt={imageAlt}
+        class="h-full w-full object-contain"
+        loading="lazy"
+      />
+    </div>
 
-  <div
-    class:list={[
-      "border-light-accent/10 relative z-10 flex shrink-0 items-center justify-center overflow-hidden rounded-2xl border",
-      featured ? "h-28 w-28 p-5 md:h-32 md:w-32 md:p-6" : "h-16 w-16 p-3",
-      logoBackgroundClass,
-    ]}
-    style={customLogoBackgroundColor
-      ? `background-color: ${customLogoBackgroundColor}`
-      : undefined}
-  >
-    <Image src={image} alt={imageAlt} class="h-full w-full object-contain" />
-  </div>
-
-  <div class="relative z-10 flex min-w-0 flex-1 flex-col">
-    <div class="flex flex-wrap items-start justify-between gap-3">
-      <div>
+    <div class="flex min-w-0 flex-1 flex-col">
+      <div class="flex flex-wrap items-start justify-between gap-3">
         <h3
-          class:list={[
-            featured ? "text-3xl" : "text-xl",
-            "leading-tight font-semibold text-balance",
-          ]}
+          class="text-xl leading-tight font-semibold tracking-tight text-balance"
         >
           {title}
         </h3>
-        <p
-          class:list={[
-            featured ? "mt-3 text-base" : "mt-2 text-sm",
-            "text-light-accent max-w-[42ch]",
-          ]}
-        >
-          {description}
-        </p>
+        {
+          status && (
+            <span class="border-light-accent/15 bg-light/5 text-light-accent inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium tracking-[0.12em] uppercase">
+              {status}
+            </span>
+          )
+        }
       </div>
+      <p class="text-light-accent mt-2 max-w-[52ch] text-sm leading-6">
+        {description}
+      </p>
       {
-        status && (
-          <span class="border-light-accent/15 bg-light-accent/8 text-light-accent inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium tracking-[0.14em] uppercase">
-            {status}
-          </span>
-        )
-      }
-    </div>
-
-    <div class="mt-5 flex flex-wrap gap-3">
-      <a
-        href={repoUrl}
-        target="_blank"
-        rel="noreferrer"
-        class="bg-primary text-light hover:bg-primary-accent inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition"
-      >
-        <span>Repo</span>
-        <Icon name="bi:github" class="h-4 w-4" />
-      </a>
-      {
-        liveUrl && (
-          <a
-            href={liveUrl}
-            target="_blank"
-            rel="noreferrer"
-            class="border-light-accent/15 bg-light-accent/8 text-light hover:border-secondary/45 hover:bg-light-accent/12 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition"
+        technologies && (
+          <ul
+            class="mt-5 flex flex-wrap gap-2"
+            aria-label={`${title} technologies`}
           >
-            <span>Live site</span>
-            <Icon name="bi:box-arrow-up-right" class="h-4 w-4" />
-          </a>
+            {technologies.map((technology) => (
+              <li class="border-light-accent/15 bg-light/5 rounded-full border px-3 py-1 text-sm">
+                {technology}
+              </li>
+            ))}
+          </ul>
         )
       }
+
+      <div class="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-6">
+        {
+          liveUrl && (
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noreferrer"
+              class="interactive-target text-primary hover:text-primary-hover inline-flex items-center gap-2 rounded-md px-1 text-sm font-bold transition-colors"
+            >
+              <span>Live site</span>
+              <Icon
+                name="bi:box-arrow-up-right"
+                class="h-4 w-4"
+                aria-hidden="true"
+              />
+            </a>
+          )
+        }
+        <a
+          href={repoUrl}
+          target="_blank"
+          rel="noreferrer"
+          class="interactive-target text-light-accent hover:text-light inline-flex items-center gap-2 rounded-md px-1 text-sm font-semibold transition-colors"
+        >
+          <span>Repo</span>
+          <Icon name="bi:github" class="h-4 w-4" aria-hidden="true" />
+        </a>
+      </div>
     </div>
   </div>
 </article>

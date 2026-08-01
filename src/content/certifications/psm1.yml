@@ -1,3 +1,5 @@
 name: Professional Scrum Master I
 image: "../../assets/images/badges/badge-psm1.png"
 certificateLink: "https://www.credly.com/badges/df2b0cac-ee76-4b8a-8f9c-b2cb93516726/linked_in_profile"
+featured: true
+displayOrder: 5

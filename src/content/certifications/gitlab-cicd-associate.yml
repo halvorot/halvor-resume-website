@@ -1,3 +1,5 @@
 name: GitLab CI/CD Associate
 image: "../../assets/images/badges/badge-gitlab-cicd-associate.png"
 certificateLink: "https://www.credly.com/badges/580e5825-e1b7-4ab6-a35b-dfadf3ad497c/public_url"
+featured: false
+displayOrder: 11

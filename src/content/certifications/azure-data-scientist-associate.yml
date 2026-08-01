@@ -1,3 +1,5 @@
 name: Azure Data Scientist Associate
 image: "../../assets/images/badges/badge-azure-data-scientist-associate.png"
 certificateLink: "https://www.credly.com/badges/6257b3a9-00a3-4e7d-9e0f-9f90fa5c080d/linked_in_profile"
+featured: false
+displayOrder: 9

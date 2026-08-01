@@ -1,19 +1,31 @@
 ---
-import snowyMountainsBackgroundImage from "../assets/images/snowy-mountains-bg.jpg";
-import BackgroundSection from "./BackgroundSection.astro";
 import ExperienceTimeline from "./ExperienceTimeline.astro";
-import GradientHeading from "./GradientHeading.astro";
-import SectionHeading from "./SectionHeading.astro";
 ---
 
-<BackgroundSection
+<section
   id="experience"
-  image={snowyMountainsBackgroundImage}
-  opacity={0.15}
-  class="pb-20"
-  contentClass="m-auto max-w-3xl p-4 text-light"
+  class="experience-section border-light-accent/10 border-b"
+  aria-labelledby="experience-title"
 >
-  <GradientHeading preText="My " gradientText="experience" />
-  <SectionHeading text="Timeline" />
-  <ExperienceTimeline />
-</BackgroundSection>
+  <div class="section-shell py-[var(--space-section)]">
+    <header>
+      <p class="section-kicker">Experience</p>
+      <h2 id="experience-title" class="section-title">
+        Professional experience
+      </h2>
+    </header>
+    <ExperienceTimeline />
+  </div>
+</section>
+
+<style>
+  .experience-section {
+    background:
+      radial-gradient(
+        circle at 10% 22%,
+        rgb(255 255 255 / 0.035),
+        transparent 28rem
+      ),
+      var(--color-dark);
+  }
+</style>

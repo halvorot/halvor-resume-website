@@ -1,38 +1,212 @@
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
+import vm from "node:vm";
 
-test("home page keeps its content and landmark contract", async () => {
+const homePageUrl = new URL("../dist/index.html", import.meta.url);
+const certificationContentUrl = new URL(
+  "../src/content/certifications/",
+  import.meta.url,
+);
+const experienceContentUrl = new URL(
+  "../src/content/experience/",
+  import.meta.url,
+);
+
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+test("home page keeps ordered landmarks and editorial content", async () => {
   // Arrange
-  const html = await readFile(new URL("../dist/index.html", import.meta.url), {
-    encoding: "utf8",
-  });
+  const html = await readFile(homePageUrl, { encoding: "utf8" });
+  const requiredIds = ["capabilities", "experience", "personal-projects"];
 
   // Act
   const mainCount = html.match(/<main(?:\s|>)/g)?.length ?? 0;
+  const sectionPositions = requiredIds.map((id) => html.indexOf(`id="${id}"`));
 
   // Assert
   assert.equal(mainCount, 1);
-  assert.match(html, /id="capabilities"/);
-  assert.match(html, /id="experience"/);
-  assert.match(html, /id="personal-projects"/);
-  assert.match(html, /Hi, I(?:&#39;|')m/);
+  assert.ok(sectionPositions.every((position) => position >= 0));
+  assert.deepEqual(
+    sectionPositions,
+    [...sectionPositions].sort((a, b) => a - b),
+  );
+  assert.match(html, /Hi, I(?:&#39;|’)m/);
+  assert.match(html, />View experience</);
+  assert.match(html, />Contact on LinkedIn</);
+  assert.match(html, /aria-label="Professional overview"/);
+  assert.match(html, /Kotlin · Platform · DevEx/);
 });
 
-test("every generated page has canonical social metadata", async () => {
+test("skills and certifications use semantic grouped content", async () => {
+  // Arrange
+  const [html, certificationFiles] = await Promise.all([
+    readFile(homePageUrl, { encoding: "utf8" }),
+    readdir(certificationContentUrl),
+  ]);
+
+  // Act
+  const certificationCount = certificationFiles.filter((file) =>
+    file.endsWith(".yml"),
+  ).length;
+  const featuredNames = [
+    "AWS Solutions Architect",
+    "Azure Developer Associate",
+    "Kotlin for Java Developers",
+    "PRINCE2",
+    "Professional Scrum Master I",
+    "ISTQB CTFL Agile",
+  ];
+  const featuredPositions = featuredNames.map((name) =>
+    html.indexOf(`>${name}<`),
+  );
+  const secondaryAzureNames = [
+    "Azure Fundamentals",
+    "Azure Data Fundamentals",
+    "Azure Data Scientist Associate",
+    "Azure AI Fundamentals",
+  ];
+  const secondaryAzurePositions = secondaryAzureNames.map((name) =>
+    html.indexOf(`>${name}<`),
+  );
+
+  // Assert
+  assert.doesNotMatch(html, /role="progressbar"/);
+  assert.doesNotMatch(html, /aria-valuenow=/);
+  assert.match(html, />Backend</);
+  assert.match(html, />Cloud &amp; Platform Interests</);
+  assert.match(html, />APIs &amp; Integration</);
+  assert.match(html, />Engineering Practice</);
+  assert.match(html, /<details\b/);
+  assert.match(html, /<summary\b/);
+  assert.match(
+    html,
+    new RegExp(
+      `<span data-certification-count(?:\\s[^>]*)?>${certificationCount}</span>`,
+    ),
+  );
+  assert.ok(featuredPositions.every((position) => position >= 0));
+  assert.deepEqual(
+    featuredPositions,
+    [...featuredPositions].sort((left, right) => left - right),
+  );
+  assert.ok(
+    featuredPositions.every((position) => position < html.indexOf("<details")),
+  );
+  assert.deepEqual(
+    secondaryAzurePositions,
+    [...secondaryAzurePositions].sort((left, right) => left - right),
+  );
+  assert.ok(
+    secondaryAzurePositions.every(
+      (position) => position > html.indexOf("<details"),
+    ),
+  );
+});
+
+test("experience renders once in descending start-date order", async () => {
+  // Arrange
+  const [html, fileNames] = await Promise.all([
+    readFile(homePageUrl, { encoding: "utf8" }),
+    readdir(experienceContentUrl),
+  ]);
+  const entries = await Promise.all(
+    fileNames
+      .filter((fileName) => fileName.endsWith(".yml"))
+      .map(async (fileName) => {
+        const content = await readFile(
+          new URL(fileName, experienceContentUrl),
+          {
+            encoding: "utf8",
+          },
+        );
+        return {
+          date: content.match(/^startDate:\s*(.+)$/m)?.[1] ?? "",
+          heading: content.match(/^heading:\s*(.+)$/m)?.[1] ?? "",
+        };
+      }),
+  );
+  const expected = entries.sort((left, right) =>
+    right.date.localeCompare(left.date),
+  );
+
+  // Act
+  const positions = expected.map(({ heading }) => html.indexOf(`>${heading}<`));
+
+  // Assert
+  for (const { heading } of expected) {
+    assert.equal(
+      html.match(new RegExp(`>${escapeRegExp(heading)}<`, "g"))?.length ?? 0,
+      1,
+    );
+  }
+  assert.deepEqual(
+    positions,
+    [...positions].sort((a, b) => a - b),
+  );
+  assert.doesNotMatch(html, />Timeline</);
+});
+
+test("project and certification links remain available", async () => {
+  // Arrange
+  const [html, projectSource, certificationFiles] = await Promise.all([
+    readFile(homePageUrl, { encoding: "utf8" }),
+    readFile(new URL("../src/data/projects.ts", import.meta.url), {
+      encoding: "utf8",
+    }),
+    readdir(certificationContentUrl),
+  ]);
+  const certificationSources = await Promise.all(
+    certificationFiles
+      .filter((fileName) => fileName.endsWith(".yml"))
+      .map((fileName) =>
+        readFile(new URL(fileName, certificationContentUrl), {
+          encoding: "utf8",
+        }),
+      ),
+  );
+
+  // Act
+  const projectLinks = [
+    ...projectSource.matchAll(/(?:repoUrl|liveUrl):\s*"([^"]+)"/g),
+  ].map((match) => match[1]);
+  const certificationLinks = certificationSources.map(
+    (source) => source.match(/certificateLink:\s*"([^"]+)"/)?.[1] ?? "",
+  );
+
+  // Assert
+  for (const link of [...projectLinks, ...certificationLinks]) {
+    assert.ok(link);
+    assert.ok(html.includes(`href="${link}"`), `Missing link: ${link}`);
+  }
+});
+
+test("generated pages keep metadata, local fonts, and safe controls", async () => {
   // Arrange
   const pagePaths = [
     "../dist/index.html",
     "../dist/404.html",
     "../dist/privacy-policy/index.html",
   ];
-
-  // Act
   const pages = await Promise.all(
     pagePaths.map((pagePath) =>
       readFile(new URL(pagePath, import.meta.url), { encoding: "utf8" }),
     ),
   );
+  const assetUrl = new URL("../dist/_astro/", import.meta.url);
+  const assetNames = await readdir(assetUrl);
+  const styles = await Promise.all(
+    assetNames
+      .filter((name) => name.endsWith(".css"))
+      .map((name) => readFile(new URL(name, assetUrl), { encoding: "utf8" })),
+  );
+
+  // Act
+  const homeHtml = pages[0];
+  const combinedOutput = [...pages, ...styles].join("\n");
+  const controls = [
+    ...homeHtml.matchAll(/<(a|button)\b[^>]*>([\s\S]*?)<\/\1>/gi),
+  ];
 
   // Assert
   for (const html of pages) {
@@ -46,64 +220,61 @@ test("every generated page has canonical social metadata", async () => {
     );
     assert.match(html, /name="twitter:card" content="summary_large_image"/);
   }
+  for (const control of controls) {
+    assert.doesNotMatch(control[2], /<(?:a|button)\b/i);
+  }
+  assert.match(combinedOutput, /Manrope Variable/);
+  assert.match(combinedOutput, /:focus-visible/);
+  assert.match(combinedOutput, /prefers-reduced-motion/);
+  assert.match(combinedOutput, /\.interactive-target\{[^}]*min-height:44px/);
+  assert.match(homeHtml, /bg-primary text-dark/);
+  assert.doesNotMatch(
+    combinedOutput,
+    /fonts\.(?:googleapis|gstatic)\.com|use\.typekit\.net/i,
+  );
 });
 
-test("generated links do not contain nested interactive controls", async () => {
+test("analytics remains consent controlled", async () => {
   // Arrange
-  const html = await readFile(new URL("../dist/index.html", import.meta.url), {
-    encoding: "utf8",
+  const html = await readFile(homePageUrl, { encoding: "utf8" });
+  const consentScript = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)]
+    .map((match) => match[1])
+    .find((script) => script.includes("grantAnalyticsConsent"));
+  const appendedScripts = [];
+  const expiredCookies = [];
+  const document = {
+    cookie: "_ga=existing; cookie-consent=denied",
+    head: { append: (script) => appendedScripts.push(script) },
+    querySelector: () => null,
+    createElement: () => ({ dataset: {} }),
+  };
+  Object.defineProperty(document, "cookie", {
+    get: () => "_ga=existing; cookie-consent=denied",
+    set: (cookie) => expiredCookies.push(cookie),
   });
-
-  // Act
-  const nestedControl = /<button\b[^>]*>\s*<a\b/i.test(html);
-
-  // Assert
-  assert.equal(nestedControl, false);
-});
-
-test("analytics loads only through the consent-controlled script", async () => {
-  // Arrange
-  const html = await readFile(new URL("../dist/index.html", import.meta.url), {
-    encoding: "utf8",
-  });
+  const window = {
+    dataLayer: [],
+    location: { hostname: "www.halvorteigen.no", protocol: "https:" },
+  };
 
   // Act
   const hasNoScriptTracker = /<noscript>[\s\S]*googletagmanager/i.test(html);
-  const hasConsentApi = html.includes("grantAnalyticsConsent");
+  const hasStaticTagManagerScript =
+    /<script[^>]+src="https:\/\/www\.googletagmanager\.com/i.test(html);
+  vm.runInNewContext(consentScript, { document, window, Date });
+  const scriptsBeforeConsent = appendedScripts.length;
+  window.grantAnalyticsConsent();
 
   // Assert
+  assert.ok(consentScript);
   assert.equal(hasNoScriptTracker, false);
-  assert.equal(hasConsentApi, true);
-  assert.match(html, /id="cookie-banner"[^>]*bg-dark-blue\/95/);
-  assert.match(html, /id="decline-cookies"[^>]*cursor-pointer/);
-  assert.match(html, /id="accept-cookies"[^>]*cursor-pointer/);
-});
-
-test("home page keeps its responsive visual contract", async () => {
-  // Arrange
-  const assetsUrl = new URL("../dist/_astro/", import.meta.url);
-  const assetNames = await readdir(assetsUrl);
-  const cssName = assetNames.find((name) => name.endsWith(".css"));
-  assert.ok(cssName);
-
-  // Act
-  const [html, css] = await Promise.all([
-    readFile(new URL("../dist/index.html", import.meta.url), {
-      encoding: "utf8",
-    }),
-    readFile(new URL(cssName, assetsUrl), { encoding: "utf8" }),
-  ]);
-
-  // Assert
-  assert.match(html, /--section-background-opacity: 0\.2/);
-  assert.match(html, /--section-background-opacity: 0\.15/);
-  assert.match(html, /--section-background-opacity: 0\.22/);
-  assert.match(html, /isolation:isolate/);
-  assert.match(html, /bg-dark-blue\/70/);
-  assert.match(html, /bg-dark-blue\/75/);
-  assert.match(html, /md:grid-cols-2/);
-  assert.match(html, /lg:hidden/);
-  assert.match(css, /--color-dark-blue:#111724/);
-  assert.match(css, /@media \(width>=48rem\)/);
-  assert.match(css, /@media \(width>=64rem\)/);
+  assert.equal(hasStaticTagManagerScript, false);
+  assert.equal(scriptsBeforeConsent, 0);
+  assert.equal(appendedScripts.length, 1);
+  assert.match(appendedScripts[0].src, /^https:\/\/www\.googletagmanager\.com/);
+  assert.ok(expiredCookies.some((cookie) => cookie.startsWith("_ga=;")));
+  assert.match(html, /grantAnalyticsConsent/);
+  assert.match(html, /id="cookie-banner"/);
+  assert.match(html, /id="decline-cookies"/);
+  assert.match(html, /id="accept-cookies"/);
 });

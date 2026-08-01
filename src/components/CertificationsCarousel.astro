@@ -1,31 +1,50 @@
 ---
 import { getCollection } from "astro:content";
 import BadgeItem from "./BadgeItem.astro";
-const certifications = await getCollection("certifications");
+
+const certifications = (await getCollection("certifications")).sort(
+  (left, right) => left.data.displayOrder - right.data.displayOrder,
+);
+const featuredCertifications = certifications.filter(
+  (certification) => certification.data.featured,
+);
+const otherCertifications = certifications.filter(
+  (certification) => !certification.data.featured,
+);
 ---
 
-<div class="mb-14 inline-flex w-full overflow-x-auto">
+<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
   {
-    certifications.map((certificationEntry) => (
-      <div class="mx-1">
-        <BadgeItem
-          href={certificationEntry.data.certificateLink}
-          image={certificationEntry.data.image}
-          imageAlt={certificationEntry.data.name}
-          title={certificationEntry.data.name}
-        />
-      </div>
+    featuredCertifications.map((certificationEntry) => (
+      <BadgeItem
+        href={certificationEntry.data.certificateLink}
+        image={certificationEntry.data.image}
+        imageAlt=""
+        title={certificationEntry.data.name}
+      />
     ))
   }
 </div>
 
-<style>
-  @reference "../styles/global.css";
-
-  div::-webkit-scrollbar {
-    @apply h-1;
-  }
-  div::-webkit-scrollbar-thumb {
-    @apply bg-light-accent/50 rounded-md;
-  }
-</style>
+{
+  otherCertifications.length > 0 && (
+    <details class="border-light-accent/10 bg-dark-accent/45 mt-6 rounded-[var(--radius-card)] border">
+      <summary class="interactive-target text-light hover:text-primary-hover flex cursor-pointer list-none items-center justify-between rounded-[var(--radius-card)] px-5 py-3 font-semibold transition-colors">
+        <span>View all certifications</span>
+        <span class="text-light-accent text-sm font-normal">
+          {otherCertifications.length} more
+        </span>
+      </summary>
+      <div class="border-light-accent/10 grid gap-4 border-t p-4 sm:grid-cols-2 lg:grid-cols-3">
+        {otherCertifications.map((certificationEntry) => (
+          <BadgeItem
+            href={certificationEntry.data.certificateLink}
+            image={certificationEntry.data.image}
+            imageAlt=""
+            title={certificationEntry.data.name}
+          />
+        ))}
+      </div>
+    </details>
+  )
+}

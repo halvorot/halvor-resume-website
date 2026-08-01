@@ -1,3 +1,5 @@
 name: ISTQB CTFL
 image: "../../assets/images/badges/badge-istqb-ctfl.png"
 certificateLink: "/certificates/certificate-istqb-ctfl.pdf"
+featured: false
+displayOrder: 12

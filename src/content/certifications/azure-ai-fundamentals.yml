@@ -1,3 +1,5 @@
 name: Azure AI Fundamentals
 image: "../../assets/images/badges/badge-azure-ai-fundamentals.png"
 certificateLink: "https://www.credly.com/badges/7338c74a-39eb-463f-87c7-b9881d850311?source=linked_in_profile"
+featured: false
+displayOrder: 10

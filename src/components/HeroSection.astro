@@ -1,68 +1,166 @@
 ---
-import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 import halvorBackgroundImage from "../assets/images/halvor-bg.jpg";
-import BackgroundSection from "./BackgroundSection.astro";
-import GradientHeading from "./GradientHeading.astro";
-import SectionHeading from "./SectionHeading.astro";
+import { siteConfig } from "../config/site";
+
+const certificationCount = (await getCollection("certifications")).length;
 ---
 
-<BackgroundSection
-  image={halvorBackgroundImage}
-  opacity={0.2}
-  position="top"
-  contentClass="m-auto max-w-3xl p-4 text-light"
->
-  <div class="mt-16 flex flex-col items-center pt-2">
-    <GradientHeading
-      level={1}
-      preText="Hi, I'm "
-      gradientText="Halvor Ødegård Teigen"
-    />
-    <SectionHeading
-      level={2}
-      text="Senior Software Engineer & Platform enthusiast"
-    />
-    <button
-      type="button"
-      class="animate-pulse"
-      aria-label="Scroll down to see more content"
-      data-scroll-to-ingress
-    >
-      <Icon name="bi:chevron-compact-down" class="h-10 w-10" />
-    </button>
-  </div>
+<section class="hero" aria-labelledby="hero-title">
+  <Image
+    src={halvorBackgroundImage}
+    alt=""
+    class="hero-image"
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="hero-overlay"></div>
+
   <div
-    id="ingress-box"
-    class="border-light-accent/10 bg-dark-blue/75 mt-10 mb-24 flex flex-col items-center justify-center rounded-xl border px-3 py-12 text-center shadow-[0_20px_60px_rgba(0,0,0,0.22)] backdrop-blur-md md:mt-12 md:p-16"
+    class="section-shell relative z-10 flex min-h-[clamp(38rem,78vh,45rem)] items-center py-20"
   >
-    <Icon name="h-logo" class="mb-10 h-16 w-16" />
-    <p class="ingress">
-      As a software engineer with the{" "}
-      <strong>everything-can-be-learned</strong> mentality, I see every project as
-      an opportunity to further develop my skills and knowledge. I am dedicated to
-      producing work that I am proud of, and I strive to deliver the best{" "}
-      <strong>quality</strong> possible. I value collaboration and believe that teamwork
-      and <strong>knowledge sharing</strong> is the key to success.
-    </p>
+    <div class="max-w-[38rem]">
+      <p class="section-kicker">Hi, I’m</p>
+      <h1 id="hero-title" class="hero-name">Halvor Ødegård Teigen</h1>
+      <p class="mt-5 text-xl font-semibold text-white sm:text-2xl">
+        Backend developer & Platform Enthusiast
+      </p>
+      <div class="text-light-accent mt-5 max-w-[38rem] space-y-2 leading-7">
+        <p>
+          <strong class="text-light font-semibold"
+            >Everything can be learned.</strong
+          >{" "}
+          That mindset means taking on new problems, doing work I'm proud of, improving
+          along the way, and sharing knowledge with the team.
+        </p>
+        <p>
+          I'm also a platform enthusiast with an interest in cloud
+          infrastructure and developer experience, and I contribute across the
+          stack when delivery requires it.
+        </p>
+      </div>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a
+          href="#experience"
+          class="interactive-target bg-primary text-dark hover:bg-primary-hover inline-flex items-center justify-center rounded-lg px-6 font-bold transition-colors"
+        >
+          View experience
+        </a>
+        <a
+          href={siteConfig.links.linkedin}
+          target="_blank"
+          rel="noreferrer"
+          class="interactive-target border-light-accent/25 bg-dark/20 text-light hover:border-primary/60 hover:bg-dark/40 inline-flex items-center justify-center rounded-lg border px-6 font-semibold transition"
+        >
+          Contact on LinkedIn
+        </a>
+      </div>
+    </div>
   </div>
-</BackgroundSection>
+</section>
+
+<section
+  class="border-light-accent/10 bg-dark border-y"
+  aria-label="Professional overview"
+>
+  <div
+    class="section-shell grid divide-y divide-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+  >
+    <div
+      class="flex min-h-24 flex-col justify-center py-5 sm:px-6 sm:first:pl-0"
+    >
+      <span class="text-light-accent text-xs tracking-[0.16em] uppercase">
+        Role
+      </span>
+      <strong class="mt-1 font-semibold">Senior Software Engineer</strong>
+    </div>
+    <div class="flex min-h-24 flex-col justify-center py-5 sm:px-6">
+      <span class="text-light-accent text-xs tracking-[0.16em] uppercase">
+        Certifications
+      </span>
+      <strong class="mt-1 font-semibold">
+        <span data-certification-count>{certificationCount}</span>{" "}
+        certifications
+      </strong>
+    </div>
+    <div class="flex min-h-24 flex-col justify-center py-5 sm:pr-0 sm:pl-6">
+      <span class="text-light-accent text-xs tracking-[0.16em] uppercase">
+        Focus
+      </span>
+      <strong class="mt-1 font-semibold">Kotlin · Platform · DevEx</strong>
+    </div>
+  </div>
+</section>
 
 <style>
-  @reference "../styles/global.css";
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-dark-blue);
+  }
 
-  .ingress strong {
-    @apply text-secondary opacity-100;
+  .hero-image,
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-image {
+    left: auto;
+    width: min(60vw, 62rem);
+    object-fit: cover;
+    object-position: 50% 14%;
+    filter: saturate(0.78) brightness(0.82);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 32%);
+    mask-image: linear-gradient(to right, transparent 0%, black 32%);
+  }
+
+  .hero-overlay {
+    background:
+      linear-gradient(
+        90deg,
+        rgb(9 11 15 / 0.98) 0%,
+        rgb(9 11 15 / 0.9) 34%,
+        rgb(9 11 15 / 0.45) 64%,
+        rgb(9 11 15 / 0.24) 100%
+      ),
+      linear-gradient(0deg, rgb(9 11 15 / 0.62), transparent 45%);
+  }
+
+  .hero-name {
+    max-width: 13ch;
+    margin-top: 0.35rem;
+    color: var(--color-light);
+    font-size: var(--text-display);
+    font-weight: 680;
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero-image {
+      width: 100%;
+      object-position: 64% 14%;
+      filter: saturate(0.72) brightness(0.7);
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .hero-overlay {
+      background:
+        linear-gradient(
+          90deg,
+          rgb(9 11 15 / 0.96) 0%,
+          rgb(9 11 15 / 0.84) 58%,
+          rgb(9 11 15 / 0.38) 100%
+        ),
+        linear-gradient(0deg, rgb(9 11 15 / 0.82), transparent 55%);
+    }
   }
 </style>
-
-<script>
-  document
-    .querySelector<HTMLButtonElement>("[data-scroll-to-ingress]")
-    ?.addEventListener("click", () => {
-      document.getElementById("ingress-box")?.scrollIntoView({
-        behavior: "auto",
-        block: "center",
-        inline: "center",
-      });
-    });
-</script>

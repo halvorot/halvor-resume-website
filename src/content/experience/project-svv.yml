@@ -1,6 +1,6 @@
 startDate: 2021-09-01
 endDate: 2022-03-01
-heading: Statends Vegvesen - project
+heading: Statens vegvesen - project
 subHeading: Python & Java Developer
 description: Generation of synthetic test data using Python, as well as implementation of a Java Spring Boot application for test data management.
 tags: ["Python", "Pandas", "NumPy", "Java", "Spring Boot"]

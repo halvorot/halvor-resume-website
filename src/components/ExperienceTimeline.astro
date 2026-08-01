@@ -3,97 +3,62 @@ import TagTile from "./TagTile.astro";
 import { getCollection } from "astro:content";
 
 const experiences = await getCollection("experience");
-const orderedExperiences = [...experiences].sort((a, b) =>
-  a.data.startDate > b.data.startDate ? -1 : 1,
+const orderedExperiences = [...experiences].sort(
+  (left, right) =>
+    right.data.startDate.getTime() - left.data.startDate.getTime(),
 );
 ---
 
-<div class="experience-timeline">
+<ol class="mt-14">
   {
     orderedExperiences.map((experience) => {
       const { startDate, endDate, heading, subHeading, description, tags } =
         experience.data;
+      const dateLabel =
+        endDate === undefined
+          ? `${startDate.getFullYear()}–Present`
+          : startDate.getFullYear() === endDate.getFullYear()
+            ? `${startDate.getFullYear()}`
+            : `${startDate.getFullYear()}–${endDate.getFullYear()}`;
+
       return (
-        <div class="experience-item">
-          <div class="experience-content">
-            <p class="text-primary text-lg leading-6 font-bold">
-              {endDate?.getFullYear() === undefined
-                ? `${startDate.getFullYear()}-`
-                : startDate.getFullYear() === endDate.getFullYear()
-                  ? startDate.getFullYear()
-                  : `${startDate.getFullYear()}-${endDate.getFullYear()}`}
+        <li class="experience-entry border-light-accent/10 relative grid border-t py-9 md:grid-cols-[10rem_1fr] md:gap-10">
+          <p class="text-primary mb-4 text-sm font-bold tracking-[0.08em] md:mb-0 md:pt-1">
+            {dateLabel}
+          </p>
+          <article>
+            <h3 class="text-2xl font-semibold tracking-tight">{heading}</h3>
+            <p class="text-light mt-1 font-medium">{subHeading}</p>
+            <p class="text-light-accent mt-4 max-w-[58rem] leading-7">
+              {description}
             </p>
-            <h3 class="text-light mb-3 text-2xl font-light">{heading}</h3>
-            <h4 class="text-light text-lg font-medium">{subHeading}</h4>
-            <p class="text-secondary text-base">{description}</p>
             {tags && (
-              <div
-                class={`tagtile-container mt-2 inline-flex flex-wrap items-center gap-1`}
+              <ul
+                class="mt-5 flex flex-wrap gap-2"
+                aria-label={`${heading} technologies and areas`}
               >
-                {tags?.map((tag) => (
-                  <TagTile text={tag} />
+                {tags.map((tag) => (
+                  <li>
+                    <TagTile text={tag} />
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
-          </div>
-        </div>
+          </article>
+        </li>
       );
     })
   }
-</div>
+</ol>
 
 <style>
-  @reference "../styles/global.css";
-
-  /* CONTAINER & SHARED */
-
-  /* required for absolute position to work properly */
-  .experience-timeline,
-  .experience-item {
-    position: relative;
-  }
-
-  .experience-timeline::before,
-  .experience-item::before,
-  .experience-item::after {
+  .experience-entry::before {
     position: absolute;
-  }
-
-  .experience-timeline {
-    @apply mb-20;
-  }
-
-  /* VERTICAL LINE */
-  .experience-timeline::before {
+    top: -1px;
+    left: 0;
+    width: 3.5rem;
+    height: 2px;
+    background: var(--color-primary);
     content: "";
-    @apply bg-primary top-7 bottom-2 hidden w-0.5 md:left-1/2 md:block;
-  }
-
-  /* EXPERIENCE ITEMS */
-  .experience-item {
-    @apply mb-2 flex w-full md:mb-0;
-  }
-
-  .experience-item:nth-child(odd) {
-    @apply justify-end;
-  }
-
-  /* alternate */
-  .experience-item:nth-child(even) {
-    @apply text-right;
-  }
-
-  .experience-item:nth-child(even) .tagtile-container {
-    @apply justify-end;
-  }
-
-  .experience-content {
-    @apply xs:max-w-xs m-5 mb-2;
-  }
-
-  /* CIRCLES ON VERTICAL LINE */
-  .experience-item::after {
-    content: "";
-    @apply bg-primary top-6 hidden h-4 w-4 rounded-full md:left-[49.05%] md:block;
   }
 </style>

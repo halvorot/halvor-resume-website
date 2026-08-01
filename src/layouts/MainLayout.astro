@@ -14,12 +14,12 @@ const { title, description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="bg-dark-blue scroll-smooth font-sans">
+<html lang="en">
   <CommonHead title={title} description={description} />
-  <body class="relative m-0 mx-auto min-h-screen max-w-screen-2xl">
+  <body class="relative m-0 min-h-screen">
     <a
       href="#main-content"
-      class="bg-primary text-light sr-only z-[100] rounded-lg px-4 py-2 focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+      class="bg-primary text-dark sr-only z-[100] min-h-11 items-center rounded-lg px-4 py-2 font-semibold focus:fixed focus:top-4 focus:left-4 focus:flex"
     >
       Skip to content
     </a>

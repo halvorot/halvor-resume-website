@@ -1,3 +1,5 @@
 name: ISTQB CT-AI
 image: "../../assets/images/badges/badge-istqb-ct-ai.png"
 certificateLink: "/certificates/certificate-istqb-ai.pdf"
+featured: false
+displayOrder: 13

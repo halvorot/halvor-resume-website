@@ -2,16 +2,15 @@ startDate: 2026-05-01
 heading: ZTL
 subHeading: Senior Software Engineer
 description: >
-  Senior software engineer at the fintech startup ZTL, building B2B payment solutions.
-  Working across backend, frontend, and platform with Kotlin, React, Kubernetes, and Azure.
-  Also serving as security champion for the team.
+  Building secure B2B payment services in Kotlin and evolving their Kubernetes and Azure
+  platform. Also serving as security champion for the team.
 tags:
   [
     "Kotlin",
-    "React",
     "Kubernetes",
     "Azure",
     "Fintech",
     "B2B payments",
     "Security",
+    "React",
   ]
