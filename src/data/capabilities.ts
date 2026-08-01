@@ -8,10 +8,10 @@ export const skillGroups = [
   {
     title: "Backend",
     description: "Reliable services, event-driven systems, and business logic.",
-    skills: ["Kotlin", "Java", "Go", "Spring Boot", "Kafka"],
+    skills: ["Kotlin", "Java", "Go", "Ktor", "Spring Boot", "Kafka"],
   },
   {
-    title: "Cloud & Platform Interests",
+    title: "Cloud & Platform",
     description: "Technologies I use and explore alongside my backend work.",
     skills: ["AWS", "Azure", "Kubernetes", "Serverless", "CI/CD"],
   },
@@ -23,8 +23,7 @@ export const skillGroups = [
   },
   {
     title: "Engineering Practice",
-    description:
-      "Security, developer experience and tooling, and high-quality software.",
+    description: "Security, developer tooling, and quality assurance.",
     skills: ["Security", "AI", "Developer experience", "Test automation"],
   },
 ] satisfies SkillGroup[];
