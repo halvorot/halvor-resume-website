@@ -209,6 +209,19 @@ test("experience renders once in descending start-date order", async () => {
   assert.doesNotMatch(html, />Timeline</);
 });
 
+test("consulting projects identify Sopra Steria", async () => {
+  // Arrange
+  const html = await readFile(homePageUrl, { encoding: "utf8" });
+
+  // Act
+  const consultingLabels = html.match(
+    />\s*Consulting project at Sopra Steria\s*</g,
+  );
+
+  // Assert
+  assert.equal(consultingLabels?.length, 3);
+});
+
 test("project and certification links remain available", async () => {
   // Arrange
   const [html, projectSource, certificationFiles] = await Promise.all([

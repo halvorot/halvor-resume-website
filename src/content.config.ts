@@ -28,6 +28,7 @@ export const collections = {
       endDate: z.date().optional(),
       heading: z.string().min(1),
       subHeading: z.string().min(1),
+      consultingFirm: z.string().min(1).optional(),
       description: z.string().min(1),
       tags: z.array(z.string().min(1)).optional(),
     }),

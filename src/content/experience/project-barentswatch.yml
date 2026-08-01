@@ -1,7 +1,8 @@
 startDate: 2024-05-01
 endDate: 2024-09-30
-heading: Barentswatch - project
+heading: Barentswatch
 subHeading: Full-stack Developer
+consultingFirm: Sopra Steria
 description: >
   Full-stack developer using React and TypeScript on the frontend and Java on the backend.
 tags: ["Java", "React", "TypeScript", "OpenAPI"]

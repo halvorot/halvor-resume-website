@@ -1,6 +1,7 @@
 startDate: 2021-09-01
 endDate: 2022-03-01
-heading: Statens vegvesen - project
+heading: Statens vegvesen
 subHeading: Python & Java Developer
+consultingFirm: Sopra Steria
 description: Generation of synthetic test data using Python, as well as implementation of a Java Spring Boot application for test data management.
 tags: ["Python", "Pandas", "NumPy", "Java", "Spring Boot"]

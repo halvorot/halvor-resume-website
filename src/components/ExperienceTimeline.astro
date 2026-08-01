@@ -12,8 +12,15 @@ const orderedExperiences = [...experiences].sort(
 <ol class="mt-14">
   {
     orderedExperiences.map((experience) => {
-      const { startDate, endDate, heading, subHeading, description, tags } =
-        experience.data;
+      const {
+        startDate,
+        endDate,
+        heading,
+        subHeading,
+        consultingFirm,
+        description,
+        tags,
+      } = experience.data;
       const dateLabel =
         endDate === undefined
           ? `${startDate.getFullYear()}–Present`
@@ -29,6 +36,11 @@ const orderedExperiences = [...experiences].sort(
           <article>
             <h3 class="text-2xl font-semibold tracking-tight">{heading}</h3>
             <p class="text-light mt-1 font-medium">{subHeading}</p>
+            {consultingFirm && (
+              <p class="text-primary mt-2 text-xs font-bold tracking-[0.12em] uppercase">
+                Consulting project at {consultingFirm}
+              </p>
+            )}
             <p class="text-light-accent mt-4 max-w-[58rem] leading-7">
               {description}
             </p>

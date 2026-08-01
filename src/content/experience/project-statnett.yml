@@ -1,7 +1,8 @@
 startDate: 2022-08-15
 endDate: 2024-04-30
-heading: Statnett - project
+heading: Statnett
 subHeading: Backend Developer & Team Lead
+consultingFirm: Sopra Steria
 description: >
   Part of an enablement team developing tools for implementing automated integration testing on Kubernetes and simulation of data streams in test environments.
   The solutions are designed to be used by all development teams in Statnett.
