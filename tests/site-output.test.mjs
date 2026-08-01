@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
+import vm from "node:vm";
 
 const homePageUrl = new URL("../dist/index.html", import.meta.url);
 const certificationContentUrl = new URL(
@@ -236,15 +237,42 @@ test("generated pages keep metadata, local fonts, and safe controls", async () =
 test("analytics remains consent controlled", async () => {
   // Arrange
   const html = await readFile(homePageUrl, { encoding: "utf8" });
+  const consentScript = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)]
+    .map((match) => match[1])
+    .find((script) => script.includes("grantAnalyticsConsent"));
+  const appendedScripts = [];
+  const expiredCookies = [];
+  const document = {
+    cookie: "_ga=existing; cookie-consent=denied",
+    head: { append: (script) => appendedScripts.push(script) },
+    querySelector: () => null,
+    createElement: () => ({ dataset: {} }),
+  };
+  Object.defineProperty(document, "cookie", {
+    get: () => "_ga=existing; cookie-consent=denied",
+    set: (cookie) => expiredCookies.push(cookie),
+  });
+  const window = {
+    dataLayer: [],
+    location: { hostname: "www.halvorteigen.no", protocol: "https:" },
+  };
 
   // Act
   const hasNoScriptTracker = /<noscript>[\s\S]*googletagmanager/i.test(html);
   const hasStaticTagManagerScript =
     /<script[^>]+src="https:\/\/www\.googletagmanager\.com/i.test(html);
+  vm.runInNewContext(consentScript, { document, window, Date });
+  const scriptsBeforeConsent = appendedScripts.length;
+  window.grantAnalyticsConsent();
 
   // Assert
+  assert.ok(consentScript);
   assert.equal(hasNoScriptTracker, false);
   assert.equal(hasStaticTagManagerScript, false);
+  assert.equal(scriptsBeforeConsent, 0);
+  assert.equal(appendedScripts.length, 1);
+  assert.match(appendedScripts[0].src, /^https:\/\/www\.googletagmanager\.com/);
+  assert.ok(expiredCookies.some((cookie) => cookie.startsWith("_ga=;")));
   assert.match(html, /grantAnalyticsConsent/);
   assert.match(html, /id="cookie-banner"/);
   assert.match(html, /id="decline-cookies"/);

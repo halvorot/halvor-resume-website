@@ -58,6 +58,34 @@ const gtmId = siteConfig.gtmId;
       });
     }
 
+    function getCookie(name) {
+      const prefix = `${name}=`;
+      return document.cookie
+        .split("; ")
+        .find((cookie) => cookie.startsWith(prefix))
+        ?.slice(prefix.length);
+    }
+
+    function clearAnalyticsCookies() {
+      const secure = window.location.protocol === "https:" ? "; Secure" : "";
+      const cookieNames = document.cookie
+        .split("; ")
+        .map((cookie) => cookie.split("=")[0])
+        .filter((name) => /^_(?:ga|gid|gat|gcl|fbp)(?:_|$)/.test(name));
+      const hostParts = window.location.hostname.split(".");
+      const domains = hostParts
+        .slice(0, -1)
+        .map((_, index) => hostParts.slice(index).join("."));
+
+      for (const name of cookieNames) {
+        document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax${secure}`;
+
+        for (const domain of domains) {
+          document.cookie = `${name}=; Max-Age=0; Path=/; Domain=.${domain}; SameSite=Lax${secure}`;
+        }
+      }
+    }
+
     function loadTagManager() {
       if (document.querySelector(`script[data-gtm-id="${gtmId}"]`)) {
         return;
@@ -93,10 +121,13 @@ const gtmId = siteConfig.gtmId;
 
     window.denyAnalyticsConsent = function () {
       updateConsent("denied");
+      clearAnalyticsCookies();
     };
 
-    if (document.cookie.includes("cookie-consent=granted")) {
+    if (getCookie("cookie-consent") === "granted") {
       window.grantAnalyticsConsent();
+    } else {
+      window.denyAnalyticsConsent();
     }
   </script>
 </head>

@@ -60,7 +60,7 @@
 
   if (!getConsent()) {
     banner?.classList.remove("hidden");
-    window.requestAnimationFrame(() => declineButton?.focus());
+    window.requestAnimationFrame(() => acceptButton?.focus());
   }
 
   acceptButton?.addEventListener("click", () => {
