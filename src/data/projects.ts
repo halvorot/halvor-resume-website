@@ -34,7 +34,7 @@ export const projects = [
   {
     title: "This website",
     description:
-      "My resume and portfolio site, built to present my experience with a fast, focused Astro frontend.",
+      "My resume and portfolio site, built with Astro and deployed through an automated delivery pipeline.",
     repoUrl: "https://github.com/halvorot/halvorot.github.io",
     liveUrl: "https://halvorteigen.no",
     image: hLogo,

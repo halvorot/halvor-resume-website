@@ -73,8 +73,8 @@ test("skills and certifications use semantic grouped content", async () => {
   assert.doesNotMatch(html, /role="progressbar"/);
   assert.doesNotMatch(html, /aria-valuenow=/);
   assert.match(html, />Backend</);
-  assert.match(html, />Cloud &amp; Platform</);
-  assert.match(html, />Frontend &amp; APIs</);
+  assert.match(html, />Cloud &amp; Platform Interests</);
+  assert.match(html, />APIs &amp; Integration</);
   assert.match(html, />Engineering Practice</);
   assert.match(html, /<details\b/);
   assert.match(html, /<summary\b/);

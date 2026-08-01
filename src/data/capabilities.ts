@@ -7,18 +7,19 @@ export interface SkillGroup {
 export const skillGroups = [
   {
     title: "Backend",
-    description: "Backend services and event-driven systems.",
+    description: "Reliable services, event-driven systems, and business logic.",
     skills: ["Kotlin", "Java", "Go", "Spring Boot", "Kafka"],
   },
   {
-    title: "Cloud & Platform",
-    description: "Cloud infrastructure and delivery pipelines.",
+    title: "Cloud & Platform Interests",
+    description: "Technologies I use and explore alongside my backend work.",
     skills: ["AWS", "Azure", "Kubernetes", "Serverless", "CI/CD"],
   },
   {
-    title: "Frontend & APIs",
-    description: "Web interfaces and clearly defined APIs.",
-    skills: ["React", "TypeScript", "OpenAPI"],
+    title: "APIs & Integration",
+    description:
+      "API contracts and system integration, with frontend delivery when needed.",
+    skills: ["OpenAPI", "REST", "React", "TypeScript"],
   },
   {
     title: "Engineering Practice",
