@@ -39,7 +39,7 @@ export const projects = [
     liveUrl: "https://halvorteigen.no",
     image: hLogo,
     imageAlt: "Halvor Teigen logo",
-    technologies: ["Astro"],
+    technologies: ["Astro", "TypeScript", "TailwindCSS"],
   },
   {
     title: "CertPortal",
@@ -57,7 +57,7 @@ export const projects = [
     liveUrl: "https://voiceboard.halvorteigen.no",
     image: voiceboardLogo,
     imageAlt: "VoiceBoard logo",
-    technologies: ["AI"],
+    technologies: ["AI", "Kotlin", "React", "Supabase"],
   },
   {
     title: "Wishly",
@@ -86,6 +86,6 @@ export const projects = [
     image: homelabIcon,
     imageAlt: "Homelab logo",
     status: "decommissioned",
-    technologies: ["Kubernetes"],
+    technologies: ["Kubernetes", "Proxmox"],
   },
 ] satisfies Project[];
