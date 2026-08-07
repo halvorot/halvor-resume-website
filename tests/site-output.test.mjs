@@ -60,7 +60,12 @@ test("navigation clears the active section when returning to the hero", async ()
     document,
     HTMLElement: MockHTMLElement,
     IntersectionObserver: MockIntersectionObserver,
-    window: { IntersectionObserver: MockIntersectionObserver },
+    window: {
+      addEventListener() {},
+      history: { replaceState() {}, state: null },
+      IntersectionObserver: MockIntersectionObserver,
+      location: { hash: "", pathname: "/", search: "" },
+    },
   });
 
   // Act
@@ -75,6 +80,71 @@ test("navigation clears the active section when returning to the hero", async ()
   // Assert
   assert.equal(activeInSkills, "location");
   assert.equal(links[0].attributes.has("aria-current"), false);
+});
+
+test("navigation syncs the section hash with the active section", async () => {
+  // Arrange
+  const source = await readFile(navigationComponentUrl, { encoding: "utf8" });
+  const script = source.match(/<script>([\s\S]*?)<\/script>/)?.[1] ?? "";
+  const compiledScript = ts.transpileModule(script, {
+    compilerOptions: { target: ts.ScriptTarget.ES2022 },
+  }).outputText;
+  class MockHTMLElement {}
+  const section = Object.assign(new MockHTMLElement(), { id: "experience" });
+  const link = {
+    dataset: { sectionLink: section.id },
+    setAttribute() {},
+    removeAttribute() {},
+  };
+  let observerCallback;
+  class MockIntersectionObserver {
+    constructor(callback) {
+      observerCallback = callback;
+    }
+
+    observe() {}
+  }
+  const replacedUrls = [];
+  const document = {
+    querySelector: () => null,
+    querySelectorAll: () => [link],
+    getElementById: () => section,
+    documentElement: { addEventListener() {} },
+    addEventListener() {},
+  };
+  const window = {
+    addEventListener() {},
+    history: {
+      state: { existing: "state" },
+      replaceState: (_state, _unused, url) => {
+        replacedUrls.push(url);
+        window.location.hash = new URL(url, "https://example.com").hash;
+      },
+    },
+    location: {
+      hash: "",
+      pathname: "/",
+      search: "?language=en",
+    },
+    IntersectionObserver: MockIntersectionObserver,
+  };
+  vm.runInNewContext(compiledScript, {
+    document,
+    HTMLElement: MockHTMLElement,
+    IntersectionObserver: MockIntersectionObserver,
+    window,
+  });
+
+  // Act
+  observerCallback([
+    { target: section, isIntersecting: true, intersectionRatio: 0.4 },
+  ]);
+  observerCallback([
+    { target: section, isIntersecting: false, intersectionRatio: 0 },
+  ]);
+
+  // Assert
+  assert.deepEqual(replacedUrls, ["/?language=en#experience", "/?language=en"]);
 });
 
 test("home page keeps ordered landmarks and editorial content", async () => {
