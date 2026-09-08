@@ -147,10 +147,81 @@ test("navigation syncs the section hash with the active section", async () => {
   assert.deepEqual(replacedUrls, ["/?language=en#experience", "/?language=en"]);
 });
 
+test("navigation activates contact at the bottom of the page", async () => {
+  // Arrange
+  const source = await readFile(navigationComponentUrl, { encoding: "utf8" });
+  const script = source.match(/<script>([\s\S]*?)<\/script>/)?.[1] ?? "";
+  const compiledScript = ts.transpileModule(script, {
+    compilerOptions: { target: ts.ScriptTarget.ES2022 },
+  }).outputText;
+  class MockHTMLElement {}
+  const sections = ["personal-projects", "contact"].map((id) =>
+    Object.assign(new MockHTMLElement(), { id }),
+  );
+  const links = sections.map(({ id }) => ({
+    dataset: { sectionLink: id },
+    attributes: new Map(),
+    setAttribute(name, value) {
+      this.attributes.set(name, value);
+    },
+    removeAttribute(name) {
+      this.attributes.delete(name);
+    },
+  }));
+  let observerCallback;
+  let scrollListener;
+  class MockIntersectionObserver {
+    constructor(callback) {
+      observerCallback = callback;
+    }
+
+    observe() {}
+  }
+  const document = {
+    querySelector: () => null,
+    querySelectorAll: () => links,
+    getElementById: (id) => sections.find((section) => section.id === id),
+    documentElement: { addEventListener() {}, scrollHeight: 1_000 },
+    addEventListener() {},
+  };
+  const window = {
+    addEventListener(name, listener) {
+      if (name === "scroll") scrollListener = listener;
+    },
+    history: { replaceState() {}, state: null },
+    innerHeight: 200,
+    IntersectionObserver: MockIntersectionObserver,
+    location: { hash: "", pathname: "/", search: "" },
+    scrollY: 500,
+  };
+  vm.runInNewContext(compiledScript, {
+    document,
+    HTMLElement: MockHTMLElement,
+    IntersectionObserver: MockIntersectionObserver,
+    window,
+  });
+
+  // Act
+  observerCallback([
+    { target: sections[0], isIntersecting: true, intersectionRatio: 0.4 },
+  ]);
+  window.scrollY = 800;
+  scrollListener();
+
+  // Assert
+  assert.equal(links[0].attributes.has("aria-current"), false);
+  assert.equal(links[1].attributes.get("aria-current"), "location");
+});
+
 test("home page keeps ordered landmarks and editorial content", async () => {
   // Arrange
   const html = await readFile(homePageUrl, { encoding: "utf8" });
-  const requiredIds = ["capabilities", "experience", "personal-projects"];
+  const requiredIds = [
+    "capabilities",
+    "experience",
+    "personal-projects",
+    "contact",
+  ];
 
   // Act
   const mainCount = html.match(/<main(?:\s|>)/g)?.length ?? 0;
@@ -165,7 +236,7 @@ test("home page keeps ordered landmarks and editorial content", async () => {
   );
   assert.match(html, /Hi, I(?:&#39;|’)m/);
   assert.match(html, />View experience</);
-  assert.match(html, />Contact on LinkedIn</);
+  assert.match(html, /href="#contact"[^>]*>\s*Contact\s*</);
   assert.match(html, /aria-label="Professional overview"/);
   assert.match(html, /Kotlin · Platform · DevEx/);
 });
@@ -324,6 +395,44 @@ test("project and certification links remain available", async () => {
     assert.ok(link);
     assert.ok(html.includes(`href="${link}"`), `Missing link: ${link}`);
   }
+});
+
+test("contact offers selectable popup booking types", async () => {
+  // Arrange
+  const html = await readFile(homePageUrl, { encoding: "utf8" });
+
+  // Act
+  const bookingButtons = [
+    ...html.matchAll(
+      /<button\b[^>]*data-calnode-popup="intro-call"[^>]*>[\s\S]*?<\/button>/g,
+    ),
+  ];
+  const consultingButtons = [
+    ...html.matchAll(
+      /<button\b[^>]*data-calnode-popup="consultation"[^>]*>[\s\S]*?<\/button>/g,
+    ),
+  ];
+  const embedScripts = [
+    ...html.matchAll(
+      /<script\b[^>]*src="https:\/\/calendar\.halvorteigen\.no\/embed\.js"[^>]*><\/script>/g,
+    ),
+  ];
+
+  // Assert
+  assert.equal(bookingButtons.length, 2);
+  assert.match(bookingButtons[0][0], /type="button"/);
+  assert.match(bookingButtons[0][0], /aria-haspopup="dialog"/);
+  assert.match(bookingButtons[0][0], />\s*Book a call\s*</);
+  assert.equal(consultingButtons.length, 1);
+  assert.match(consultingButtons[0][0], />\s*<span[^>]*>Technical consulting</);
+  assert.match(html, /id="call-type-toggle"/);
+  assert.match(html, /aria-controls="call-type-menu"/);
+  assert.match(html, /aria-expanded="false"/);
+  assert.match(html, /30 minutes · Free/);
+  assert.match(html, /1 hour · NOK 1,200/);
+  assert.equal(embedScripts.length, 1);
+  assert.match(embedScripts[0][0], /\basync(?:="")?/);
+  assert.match(html, />\s*LinkedIn\s*</);
 });
 
 test("generated pages keep metadata, local fonts, and safe controls", async () => {

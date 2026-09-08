@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import halvorBackgroundImage from "../assets/images/halvor-bg.jpg";
-import { siteConfig } from "../config/site";
 
 const certificationCount = (await getCollection("certifications")).length;
 ---
@@ -45,12 +44,10 @@ const certificationCount = (await getCollection("certifications")).length;
           View experience
         </a>
         <a
-          href={siteConfig.links.linkedin}
-          target="_blank"
-          rel="noreferrer"
-          class="interactive-target border-light-accent/25 bg-dark/20 text-light hover:border-primary/60 hover:bg-dark/40 inline-flex items-center justify-center rounded-lg border px-6 font-semibold transition"
+          href="#contact"
+          class="interactive-target secondary-action inline-flex items-center justify-center rounded-lg px-6 font-semibold"
         >
-          Contact on LinkedIn
+          Contact
         </a>
       </div>
     </div>

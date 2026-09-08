@@ -14,18 +14,69 @@ import { siteConfig } from "../config/site";
           Get in touch
         </h2>
         <p class="text-light-accent mt-4 max-w-xl">
-          The best way to reach me is on LinkedIn.
+          Book a free intro call, an hour of technical consulting, or contact me
+          directly via LinkedIn.
         </p>
       </div>
-      <a
-        href={siteConfig.links.linkedin}
-        target="_blank"
-        rel="noreferrer"
-        class="interactive-target bg-primary text-dark hover:bg-primary-hover inline-flex items-center justify-center gap-2 rounded-lg px-6 font-bold transition-colors"
-      >
-        Contact on LinkedIn
-        <Icon name="bi:box-arrow-up-right" class="h-4 w-4" aria-hidden="true" />
-      </a>
+      <div class="flex flex-col gap-3 sm:flex-row md:justify-end">
+        <div class="relative flex">
+          <button
+            type="button"
+            data-calnode-popup="intro-call"
+            aria-haspopup="dialog"
+            class="interactive-target bg-primary text-dark hover:bg-primary-hover inline-flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-l-lg px-6 font-bold transition-colors"
+          >
+            Book a call
+            <Icon name="bi:calendar-event" class="h-4 w-4" aria-hidden="true" />
+          </button>
+          <button
+            id="call-type-toggle"
+            type="button"
+            aria-label="Choose call type"
+            aria-controls="call-type-menu"
+            aria-expanded="false"
+            class="interactive-target bg-primary text-dark hover:bg-primary-hover border-dark/20 inline-flex cursor-pointer items-center justify-center rounded-r-lg border-l transition-colors"
+          >
+            <Icon
+              name="bi:chevron-down"
+              class="h-4 w-4 transition-transform"
+              aria-hidden="true"
+            />
+          </button>
+          <div
+            id="call-type-menu"
+            class="border-light-accent/15 bg-dark-blue absolute right-0 bottom-[calc(100%+0.5rem)] z-10 hidden w-72 overflow-hidden rounded-xl border p-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+          >
+            <button
+              type="button"
+              data-calnode-popup="intro-call"
+              aria-haspopup="dialog"
+              class="interactive-target hover:bg-light/5 flex w-full cursor-pointer flex-col items-start rounded-lg px-4 py-3 text-left transition-colors"
+            >
+              <span class="text-light font-semibold">Intro call</span>
+              <span class="text-light-accent text-xs">30 minutes · Free</span>
+            </button>
+            <button
+              type="button"
+              data-calnode-popup="consultation"
+              aria-haspopup="dialog"
+              class="interactive-target hover:bg-light/5 flex w-full cursor-pointer flex-col items-start rounded-lg px-4 py-3 text-left transition-colors"
+            >
+              <span class="text-light font-semibold">Technical consulting</span>
+              <span class="text-light-accent text-xs">1 hour · NOK 1,200</span>
+            </button>
+          </div>
+        </div>
+        <a
+          href={siteConfig.links.linkedin}
+          target="_blank"
+          rel="noreferrer"
+          class="interactive-target secondary-action inline-flex items-center justify-center gap-2 rounded-lg px-6 font-semibold"
+        >
+          <Icon name="bi:linkedin" class="h-4 w-4" aria-hidden="true" />
+          LinkedIn
+        </a>
+      </div>
     </div>
 
     <div
@@ -62,3 +113,39 @@ import { siteConfig } from "../config/site";
     </div>
   </div>
 </footer>
+
+<script>
+  const callTypeToggle =
+    document.querySelector<HTMLButtonElement>("#call-type-toggle");
+  const callTypeMenu = document.querySelector<HTMLElement>("#call-type-menu");
+
+  const setCallTypeMenuOpen = (open: boolean) => {
+    callTypeMenu?.classList.toggle("hidden", !open);
+    callTypeToggle?.setAttribute("aria-expanded", String(open));
+    callTypeToggle?.querySelector("svg")?.classList.toggle("rotate-180", open);
+  };
+
+  callTypeToggle?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    setCallTypeMenuOpen(
+      callTypeToggle.getAttribute("aria-expanded") !== "true",
+    );
+  });
+
+  callTypeMenu?.addEventListener("click", () => setCallTypeMenuOpen(false));
+  document.documentElement.addEventListener("click", () =>
+    setCallTypeMenuOpen(false),
+  );
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      callTypeToggle?.getAttribute("aria-expanded") === "true"
+    ) {
+      setCallTypeMenuOpen(false);
+      callTypeToggle.focus();
+    }
+  });
+</script>
+
+<script is:inline src="https://calendar.halvorteigen.no/embed.js" async
+></script>
