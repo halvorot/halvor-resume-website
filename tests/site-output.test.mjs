@@ -570,7 +570,7 @@ test("light-mode hero uses semantic light tokens for readable copy", async () =>
   assert.match(hero, /<strong class="text-hero-text font-semibold">/);
 });
 
-test("light-mode hero replaces the dark photo treatment with a branded gradient", async () => {
+test("light-mode hero keeps its image beneath a semantic light overlay", async () => {
   // Arrange
   const [hero, styles] = await Promise.all([
     readFile(heroComponentUrl, { encoding: "utf8" }),
@@ -587,12 +587,11 @@ test("light-mode hero replaces the dark photo treatment with a branded gradient"
 
   // Assert
   for (const lightTokens of [lightThemeBlock, systemLightBlock]) {
-    assert.match(lightTokens, /--hero-background:\s*linear-gradient\(/);
-    assert.match(lightTokens, /--hero-image-opacity:\s*0;/);
-    assert.match(lightTokens, /--hero-overlay:\s*none;/);
-    assert.match(lightTokens, /--hero-mobile-overlay:\s*none;/);
+    assert.match(lightTokens, /--hero-image-opacity:\s*(?!0(?:\.0+)?;)[\d.]+;/);
+    assert.match(lightTokens, /--hero-overlay:\s*linear-gradient\(/);
+    assert.match(lightTokens, /--hero-mobile-overlay:\s*linear-gradient\(/);
   }
-  assert.match(hero, /background:\s*var\(--hero-background\);/);
+  assert.match(hero, /<div class="hero-overlay"><\/div>/);
   assert.match(hero, /opacity:\s*var\(--hero-image-opacity\);/);
   assert.match(hero, /background:\s*var\(--hero-overlay\);/);
   assert.match(hero, /background:\s*var\(--hero-mobile-overlay\);/);
