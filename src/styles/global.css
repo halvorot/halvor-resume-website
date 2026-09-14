@@ -31,6 +31,25 @@
   --hero-text: #f3f4f6;
   --hero-text-muted: #b6bdc8;
   --hero-accent: #f97316;
+  --hero-background: #0d1118;
+  --hero-image-opacity: 1;
+  --hero-overlay:
+    linear-gradient(
+      90deg,
+      rgb(9 11 15 / 0.98) 0%,
+      rgb(9 11 15 / 0.9) 34%,
+      rgb(9 11 15 / 0.45) 64%,
+      rgb(9 11 15 / 0.24) 100%
+    ),
+    linear-gradient(0deg, rgb(9 11 15 / 0.62), transparent 45%);
+  --hero-mobile-overlay:
+    linear-gradient(
+      90deg,
+      rgb(9 11 15 / 0.96) 0%,
+      rgb(9 11 15 / 0.84) 58%,
+      rgb(9 11 15 / 0.38) 100%
+    ),
+    linear-gradient(0deg, rgb(9 11 15 / 0.82), transparent 55%);
   --border-subtle: rgb(182 189 200 / 0.34);
   --border-strong: rgb(243 244 246 / 0.52);
   color-scheme: dark;
@@ -46,13 +65,25 @@
 }
 
 :root[data-theme="light"] {
-  --accent: #c2410c;
-  --accent-hover: #9a3412;
+  --accent: #c64b0c;
+  --accent-hover: #b8400c;
   --surface-base: #f8fafc;
   --surface-strong: #ffffff;
   --surface-raised: #eef2f7;
   --text-primary: #172033;
   --text-muted: #4b5b6c;
+  --hero-text: #172033;
+  --hero-text-muted: #4b5b6c;
+  --hero-accent: #c64b0c;
+  --hero-background: linear-gradient(
+    135deg,
+    #fffaf5 0%,
+    #f8fafc 48%,
+    #e7effa 100%
+  );
+  --hero-image-opacity: 0;
+  --hero-overlay: none;
+  --hero-mobile-overlay: none;
   --border-subtle: rgb(71 85 105 / 0.28);
   --border-strong: rgb(71 85 105 / 0.46);
   --shadow-card: 0 20px 60px rgb(15 23 42 / 0.12);
@@ -61,13 +92,25 @@
 
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
-    --accent: #c2410c;
-    --accent-hover: #9a3412;
+    --accent: #c64b0c;
+    --accent-hover: #b8400c;
     --surface-base: #f8fafc;
     --surface-strong: #ffffff;
     --surface-raised: #eef2f7;
     --text-primary: #172033;
     --text-muted: #4b5b6c;
+    --hero-text: #172033;
+    --hero-text-muted: #4b5b6c;
+    --hero-accent: #c64b0c;
+    --hero-background: linear-gradient(
+      135deg,
+      #fffaf5 0%,
+      #f8fafc 48%,
+      #e7effa 100%
+    );
+    --hero-image-opacity: 0;
+    --hero-overlay: none;
+    --hero-mobile-overlay: none;
     --border-subtle: rgb(71 85 105 / 0.28);
     --border-strong: rgb(71 85 105 / 0.46);
     --shadow-card: 0 20px 60px rgb(15 23 42 / 0.12);
