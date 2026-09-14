@@ -67,6 +67,7 @@
   --text-heading: clamp(2.25rem, 4vw, 3.75rem);
   --radius-card: 1.25rem;
   --shadow-card: 0 20px 60px rgb(0 0 0 / 0.24);
+  --shadow-capability-card: var(--shadow-card);
   --transition-fast: 160ms ease;
 }
 
@@ -93,7 +94,7 @@
       rgb(248 250 252 / 0.98) 0%,
       rgb(248 250 252 / 0.9) 34%,
       rgb(248 250 252 / 0.5) 64%,
-      rgb(231 239 250 / 0.24) 100%
+      rgb(231 239 250 / 0.12) 100%
     ),
     linear-gradient(0deg, rgb(248 250 252 / 0.5), transparent 45%);
   --hero-mobile-overlay:
@@ -101,12 +102,13 @@
       90deg,
       rgb(248 250 252 / 0.96) 0%,
       rgb(248 250 252 / 0.84) 58%,
-      rgb(248 250 252 / 0.38) 100%
+      rgb(248 250 252 / 0.24) 100%
     ),
     linear-gradient(0deg, rgb(248 250 252 / 0.72), transparent 55%);
   --border-subtle: rgb(71 85 105 / 0.28);
   --border-strong: rgb(71 85 105 / 0.46);
   --shadow-card: 0 20px 60px rgb(15 23 42 / 0.12);
+  --shadow-capability-card: 0 8px 24px rgb(15 23 42 / 0.06);
   color-scheme: light;
 }
 
@@ -177,22 +179,15 @@ button:focus-visible {
 .secondary-action {
   border: 1px solid var(--border-subtle);
   background: var(--surface-raised);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.08),
-    0 2px 8px rgb(0 0 0 / 0.1);
   color: var(--text-primary);
   transition:
     background-color var(--transition-fast),
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast);
+    border-color var(--transition-fast);
 }
 
 .secondary-action:hover {
   border-color: var(--border-strong);
   background: var(--surface-strong);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.12),
-    0 3px 10px rgb(0 0 0 / 0.14);
 }
 
 @media (prefers-reduced-motion: reduce) {
