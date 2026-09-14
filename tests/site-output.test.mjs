@@ -613,7 +613,7 @@ test("theme toggle sits subtly at the far right of the main navigation layout", 
   );
 });
 
-test("primary controls and the hero kicker retain contrast in light mode", async () => {
+test("primary controls and the hero kicker retain contrast across themes", async () => {
   // Arrange
   const primaryControlComponentUrls = [
     new URL("../src/layouts/MainLayout.astro", import.meta.url),
@@ -640,7 +640,7 @@ test("primary controls and the hero kicker retain contrast in light mode", async
   );
 
   // Assert
-  assert.match(styles, /--on-accent:\s*#(?:fff|ffffff);/i);
+  assert.match(styles, /--on-accent:\s*#0d1118;/i);
   assert.match(styles, /--color-on-accent:\s*var\(--on-accent\);/);
   assert.match(lightThemeBlock, /--accent:\s*#f97316;/i);
   assert.match(lightThemeBlock, /--accent-hover:\s*#ff8a1f;/i);
