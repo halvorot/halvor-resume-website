@@ -17,6 +17,11 @@ const navigationComponentUrl = new URL(
   "../src/components/Navigation.astro",
   import.meta.url,
 );
+const heroComponentUrl = new URL(
+  "../src/components/HeroSection.astro",
+  import.meta.url,
+);
+const globalStylesUrl = new URL("../src/styles/global.css", import.meta.url);
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -481,7 +486,7 @@ test("generated pages keep metadata, local fonts, and safe controls", async () =
   assert.match(combinedOutput, /:focus-visible/);
   assert.match(combinedOutput, /prefers-reduced-motion/);
   assert.match(combinedOutput, /\.interactive-target\{[^}]*min-height:44px/);
-  assert.match(homeHtml, /bg-primary text-dark/);
+  assert.match(homeHtml, /bg-primary text-on-accent/);
   assert.doesNotMatch(
     combinedOutput,
     /fonts\.(?:googleapis|gstatic)\.com|use\.typekit\.net/i,
@@ -531,4 +536,106 @@ test("analytics remains consent controlled", async () => {
   assert.match(html, /id="cookie-banner"/);
   assert.match(html, /id="decline-cookies"/);
   assert.match(html, /id="accept-cookies"/);
+});
+
+test("hero copy stays high contrast in explicit and system light modes", async () => {
+  // Arrange
+  const [hero, styles] = await Promise.all([
+    readFile(heroComponentUrl, { encoding: "utf8" }),
+    readFile(globalStylesUrl, { encoding: "utf8" }),
+  ]);
+
+  // Act
+  const lightThemeBlock = styles.match(
+    /:root\[data-theme="light"\]\s*\{([\s\S]*?)\n\}/,
+  )?.[1];
+  const systemLightBlock = styles.match(
+    /@media \(prefers-color-scheme: light\)\s*\{\s*:root:not\(\[data-theme\]\)\s*\{([\s\S]*?)\n\s*\}/,
+  )?.[1];
+
+  // Assert
+  assert.match(styles, /--hero-text:\s*#f3f4f6;/);
+  assert.match(styles, /--hero-text-muted:\s*#b6bdc8;/);
+  assert.doesNotMatch(lightThemeBlock, /--hero-text(?:-muted)?:/);
+  assert.doesNotMatch(systemLightBlock, /--hero-text(?:-muted)?:/);
+  assert.match(hero, /\.hero-name\s*\{[\s\S]*?color: var\(--hero-text\);/);
+  assert.match(
+    hero,
+    /class="mt-7 text-xl font-semibold text-hero-text sm:text-2xl"/,
+  );
+  assert.match(
+    hero,
+    /class="text-hero-text-muted mt-5 max-w-\[38rem\] leading-7"/,
+  );
+  assert.match(hero, /<strong class="text-hero-text font-semibold">/);
+});
+
+test("primary controls and the hero kicker retain contrast in light mode", async () => {
+  // Arrange
+  const primaryControlComponentUrls = [
+    new URL("../src/layouts/MainLayout.astro", import.meta.url),
+    new URL("../src/components/Footer.astro", import.meta.url),
+    navigationComponentUrl,
+    heroComponentUrl,
+    new URL("../src/components/CookieConsent.astro", import.meta.url),
+  ];
+  const [styles, hero, ...primaryControlComponents] = await Promise.all([
+    readFile(globalStylesUrl, { encoding: "utf8" }),
+    readFile(heroComponentUrl, { encoding: "utf8" }),
+    ...primaryControlComponentUrls.map((url) =>
+      readFile(url, { encoding: "utf8" }),
+    ),
+  ]);
+  const lightThemeBlock = styles.match(
+    /:root\[data-theme="light"\]\s*\{([\s\S]*?)\n\}/,
+  )?.[1];
+  const systemLightBlock = styles.match(
+    /@media \(prefers-color-scheme: light\)\s*\{\s*:root:not\(\[data-theme\]\)\s*\{([\s\S]*?)\n\s*\}/,
+  )?.[1];
+
+  // Act
+  const primaryControls = primaryControlComponents.flatMap((component) =>
+    [...component.matchAll(/class="[^"]*\bbg-primary\b[^"]*"/g)].map(
+      (match) => match[0],
+    ),
+  );
+
+  // Assert
+  assert.match(styles, /--on-accent:\s*#(?:fff|ffffff);/i);
+  assert.match(styles, /--color-on-accent:\s*var\(--on-accent\);/);
+  assert.doesNotMatch(lightThemeBlock, /--on-accent:/);
+  assert.doesNotMatch(systemLightBlock, /--on-accent:/);
+  assert.equal(primaryControls.length, 7);
+  for (const control of primaryControls) {
+    assert.match(control, /\btext-on-accent\b/);
+    assert.doesNotMatch(control, /\btext-dark\b/);
+  }
+  assert.match(styles, /--hero-accent:\s*#f97316;/i);
+  assert.match(styles, /--color-hero-accent:\s*var\(--hero-accent\);/);
+  assert.doesNotMatch(lightThemeBlock, /--hero-accent:/);
+  assert.doesNotMatch(systemLightBlock, /--hero-accent:/);
+  assert.match(hero, /class="section-kicker hero-kicker"/);
+  assert.match(
+    hero,
+    /\.hero-kicker\s*\{[\s\S]*?color:\s*var\(--hero-accent\);/,
+  );
+});
+
+test("theme preference applies a saved choice before rendering", async () => {
+  // Arrange
+  const html = await readFile(homePageUrl, { encoding: "utf8" });
+  const themeScript = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)]
+    .map((match) => match[1])
+    .find((script) => script.includes("theme-preference"));
+  const document = { documentElement: { dataset: {} } };
+  const localStorage = {
+    getItem: () => "light",
+    setItem() {},
+  };
+
+  // Act
+  vm.runInNewContext(themeScript, { document, localStorage, window: {} });
+
+  // Assert
+  assert.equal(document.documentElement.dataset.theme, "light");
 });
