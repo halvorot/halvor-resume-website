@@ -87,7 +87,7 @@ const certificationCount = (await getCollection("certifications")).length;
   .hero {
     position: relative;
     overflow: hidden;
-    background-color: var(--color-dark-blue);
+    background: var(--hero-background);
   }
 
   .hero-image,
@@ -103,21 +103,14 @@ const certificationCount = (await getCollection("certifications")).length;
     width: min(60vw, 62rem);
     object-fit: cover;
     object-position: 50% 14%;
+    opacity: var(--hero-image-opacity);
     filter: saturate(0.78) brightness(0.82);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 32%);
     mask-image: linear-gradient(to right, transparent 0%, black 32%);
   }
 
   .hero-overlay {
-    background:
-      linear-gradient(
-        90deg,
-        rgb(9 11 15 / 0.98) 0%,
-        rgb(9 11 15 / 0.9) 34%,
-        rgb(9 11 15 / 0.45) 64%,
-        rgb(9 11 15 / 0.24) 100%
-      ),
-      linear-gradient(0deg, rgb(9 11 15 / 0.62), transparent 45%);
+    background: var(--hero-overlay);
   }
 
   .hero-name {
@@ -145,14 +138,7 @@ const certificationCount = (await getCollection("certifications")).length;
     }
 
     .hero-overlay {
-      background:
-        linear-gradient(
-          90deg,
-          rgb(9 11 15 / 0.96) 0%,
-          rgb(9 11 15 / 0.84) 58%,
-          rgb(9 11 15 / 0.38) 100%
-        ),
-        linear-gradient(0deg, rgb(9 11 15 / 0.82), transparent 55%);
+      background: var(--hero-mobile-overlay);
     }
   }
 </style>

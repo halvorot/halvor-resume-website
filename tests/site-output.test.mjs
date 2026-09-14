@@ -538,7 +538,7 @@ test("analytics remains consent controlled", async () => {
   assert.match(html, /id="accept-cookies"/);
 });
 
-test("hero copy stays high contrast in explicit and system light modes", async () => {
+test("light-mode hero uses semantic light tokens for readable copy", async () => {
   // Arrange
   const [hero, styles] = await Promise.all([
     readFile(heroComponentUrl, { encoding: "utf8" }),
@@ -554,10 +554,10 @@ test("hero copy stays high contrast in explicit and system light modes", async (
   )?.[1];
 
   // Assert
-  assert.match(styles, /--hero-text:\s*#f3f4f6;/);
-  assert.match(styles, /--hero-text-muted:\s*#b6bdc8;/);
-  assert.doesNotMatch(lightThemeBlock, /--hero-text(?:-muted)?:/);
-  assert.doesNotMatch(systemLightBlock, /--hero-text(?:-muted)?:/);
+  assert.match(lightThemeBlock, /--hero-text:\s*#172033;/);
+  assert.match(lightThemeBlock, /--hero-text-muted:\s*#4b5b6c;/);
+  assert.match(systemLightBlock, /--hero-text:\s*#172033;/);
+  assert.match(systemLightBlock, /--hero-text-muted:\s*#4b5b6c;/);
   assert.match(hero, /\.hero-name\s*\{[\s\S]*?color: var\(--hero-text\);/);
   assert.match(
     hero,
@@ -568,6 +568,59 @@ test("hero copy stays high contrast in explicit and system light modes", async (
     /class="text-hero-text-muted mt-5 max-w-\[38rem\] leading-7"/,
   );
   assert.match(hero, /<strong class="text-hero-text font-semibold">/);
+});
+
+test("light-mode hero replaces the dark photo treatment with a branded gradient", async () => {
+  // Arrange
+  const [hero, styles] = await Promise.all([
+    readFile(heroComponentUrl, { encoding: "utf8" }),
+    readFile(globalStylesUrl, { encoding: "utf8" }),
+  ]);
+
+  // Act
+  const lightThemeBlock = styles.match(
+    /:root\[data-theme="light"\]\s*\{([\s\S]*?)\n\}/,
+  )?.[1];
+  const systemLightBlock = styles.match(
+    /@media \(prefers-color-scheme: light\)\s*\{\s*:root:not\(\[data-theme\]\)\s*\{([\s\S]*?)\n\s*\}/,
+  )?.[1];
+
+  // Assert
+  for (const lightTokens of [lightThemeBlock, systemLightBlock]) {
+    assert.match(lightTokens, /--hero-background:\s*linear-gradient\(/);
+    assert.match(lightTokens, /--hero-image-opacity:\s*0;/);
+    assert.match(lightTokens, /--hero-overlay:\s*none;/);
+    assert.match(lightTokens, /--hero-mobile-overlay:\s*none;/);
+  }
+  assert.match(hero, /background:\s*var\(--hero-background\);/);
+  assert.match(hero, /opacity:\s*var\(--hero-image-opacity\);/);
+  assert.match(hero, /background:\s*var\(--hero-overlay\);/);
+  assert.match(hero, /background:\s*var\(--hero-mobile-overlay\);/);
+});
+
+test("theme toggle stays with the site identity instead of competing with Download CV", async () => {
+  // Arrange
+  const navigation = await readFile(navigationComponentUrl, {
+    encoding: "utf8",
+  });
+
+  // Assert
+  assert.match(
+    navigation,
+    /<div class="flex items-center gap-1">\s*<a[\s\S]*?aria-label="Halvor Ødegård Teigen, home"[\s\S]*?<\/a>\s*<button\s*id="theme-toggle"/,
+  );
+  assert.match(
+    navigation,
+    /id="theme-toggle"[\s\S]*?class="interactive-target text-light-accent hover:bg-light\/8 inline-flex h-11 items-center justify-center rounded-lg transition-colors"[\s\S]*?aria-label="Theme: choose light or dark appearance"[\s\S]*?aria-pressed="false"/,
+  );
+  assert.match(
+    navigation,
+    /<div class="hidden items-center gap-1 lg:flex">[\s\S]*?Download CV[\s\S]*?<\/div>/,
+  );
+  assert.doesNotMatch(
+    navigation,
+    /<div class="flex items-center gap-1">\s*<button\s*id="theme-toggle"[\s\S]*?id="menu-btn"/,
+  );
 });
 
 test("primary controls and the hero kicker retain contrast in light mode", async () => {
@@ -603,6 +656,10 @@ test("primary controls and the hero kicker retain contrast in light mode", async
   // Assert
   assert.match(styles, /--on-accent:\s*#(?:fff|ffffff);/i);
   assert.match(styles, /--color-on-accent:\s*var\(--on-accent\);/);
+  for (const lightTokens of [lightThemeBlock, systemLightBlock]) {
+    assert.match(lightTokens, /--accent:\s*#c64b0c;/i);
+    assert.match(lightTokens, /--accent-hover:\s*#b8400c;/i);
+  }
   assert.doesNotMatch(lightThemeBlock, /--on-accent:/);
   assert.doesNotMatch(systemLightBlock, /--on-accent:/);
   assert.equal(primaryControls.length, 7);
@@ -612,8 +669,8 @@ test("primary controls and the hero kicker retain contrast in light mode", async
   }
   assert.match(styles, /--hero-accent:\s*#f97316;/i);
   assert.match(styles, /--color-hero-accent:\s*var\(--hero-accent\);/);
-  assert.doesNotMatch(lightThemeBlock, /--hero-accent:/);
-  assert.doesNotMatch(systemLightBlock, /--hero-accent:/);
+  assert.match(lightThemeBlock, /--hero-accent:\s*#c64b0c;/i);
+  assert.match(systemLightBlock, /--hero-accent:\s*#c64b0c;/i);
   assert.match(hero, /class="section-kicker hero-kicker"/);
   assert.match(
     hero,
