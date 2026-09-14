@@ -21,26 +21,22 @@ import { navigation } from "../data/navigation";
     </a>
 
     <div class="hidden items-center gap-1 lg:flex">
-      {
-        navigation.map((item) => (
-          <a
-            href={item.path}
-            data-section-link={item.path.split("#")[1]}
-            class="interactive-target text-light-accent hover:text-light inline-flex h-11 items-center rounded-lg px-4 text-sm font-semibold transition-colors"
-          >
-            {item.name}
-          </a>
-        ))
-      }
+      {navigation.map((item) => (
+        <a
+          href={item.path}
+          data-section-link={item.path.split("#")[1]}
+          class="interactive-target text-light-accent hover:text-light inline-flex h-11 items-center rounded-lg px-4 text-sm font-semibold transition-colors"
+        >
+          {item.name}
+        </a>
+      ))}
       <a
         href={siteConfig.links.cv}
         target="_blank"
         rel="noreferrer"
         class="interactive-target group ml-3 inline-flex h-11 items-center justify-center rounded-lg text-sm font-bold"
       >
-        <span
-          class="bg-primary text-dark group-hover:bg-primary-hover inline-flex h-9 items-center rounded-md px-4 transition-colors"
-        >
+        <span class="bg-primary text-dark group-hover:bg-primary-hover inline-flex h-9 items-center rounded-md px-4 transition-colors">
           Download CV
         </span>
       </a>
@@ -63,20 +59,16 @@ import { navigation } from "../data/navigation";
     class="border-light-accent/10 bg-dark-blue hidden border-t lg:hidden"
   >
     <div class="section-shell flex flex-col py-3">
-      {
-        navigation.map((item) => (
-          <a
-            href={item.path}
-            data-section-link={item.path.split("#")[1]}
-            class="interactive-target text-light-accent hover:text-light hover:bg-light/5 flex items-center rounded-lg px-3 font-semibold transition-colors"
-          >
-            {item.name}
-          </a>
-        ))
-      }
-      <div
-        class="border-light-accent/10 mt-2 grid gap-2 border-t pt-4 sm:grid-cols-2"
-      >
+      {navigation.map((item) => (
+        <a
+          href={item.path}
+          data-section-link={item.path.split("#")[1]}
+          class="interactive-target text-light-accent hover:text-light hover:bg-light/5 flex items-center rounded-lg px-3 font-semibold transition-colors"
+        >
+          {item.name}
+        </a>
+      ))}
+      <div class="border-light-accent/10 mt-2 grid gap-2 border-t pt-4 sm:grid-cols-2">
         <a
           href={siteConfig.links.linkedin}
           target="_blank"
