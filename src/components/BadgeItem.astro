@@ -20,7 +20,9 @@ const { href, image, imageAlt, title } = Astro.props;
   aria-label={`${title} certificate`}
   class="certification-card border-light-accent/10 bg-dark-accent/75 hover:border-primary/45 interactive-target group flex min-h-36 items-center gap-4 rounded-[var(--radius-card)] border p-5 transition"
 >
-  <span class="bg-light flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full p-3">
+  <span
+    class="bg-light flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full p-3"
+  >
     <Image
       src={image}
       alt={imageAlt}
@@ -30,7 +32,9 @@ const { href, image, imageAlt, title } = Astro.props;
   </span>
   <span class="min-w-0">
     <span class="text-light block leading-snug font-semibold">{title}</span>
-    <span class="text-light-accent mt-2 inline-flex items-center gap-1.5 text-xs">
+    <span
+      class="text-light-accent mt-2 inline-flex items-center gap-1.5 text-xs"
+    >
       View credential
       <Icon
         name="bi:box-arrow-up-right"

@@ -32,11 +32,12 @@ const gtmId = siteConfig.gtmId;
     try {
       const themePreference = localStorage.getItem("theme-preference");
 
-      if (themePreference === "light" || themePreference === "dark") {
-        document.documentElement.dataset.theme = themePreference;
-      }
+      document.documentElement.dataset.theme =
+        themePreference === "light" || themePreference === "dark"
+          ? themePreference
+          : "dark";
     } catch {
-      // Keep the system preference when storage is unavailable.
+      document.documentElement.dataset.theme = "dark";
     }
   </script>
   <meta property="og:url" content={canonicalUrl} />

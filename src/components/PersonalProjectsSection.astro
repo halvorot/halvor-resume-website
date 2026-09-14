@@ -19,25 +19,23 @@ const standardProjects = projects
   <div class="section-shell py-[var(--space-section)]">
     <header>
       <p class="section-kicker">Projects</p>
-      <h2 id="projects-title" class="section-title">
-        Personal projects
-      </h2>
+      <h2 id="projects-title" class="section-title">Personal projects</h2>
       <p class="text-light-accent mt-5 max-w-2xl text-lg leading-8">
         Self-hosted infrastructure, developer tooling, and selected applications
         built for learning and experimentation.
       </p>
     </header>
 
-    {featuredProject && (
-      <div class="mt-12">
-        <ProjectCard {...featuredProject} />
-      </div>
-    )}
+    {
+      featuredProject && (
+        <div class="mt-12">
+          <ProjectCard {...featuredProject} />
+        </div>
+      )
+    }
 
     <div class="mt-5 grid gap-5 md:grid-cols-2">
-      {standardProjects.map((project) => (
-        <ProjectCard {...project} />
-      ))}
+      {standardProjects.map((project) => <ProjectCard {...project} />)}
     </div>
   </div>
 </section>
