@@ -549,19 +549,13 @@ test("light-mode hero uses semantic light tokens for readable copy", async () =>
   const lightThemeBlock = styles.match(
     /:root\[data-theme="light"\]\s*\{([\s\S]*?)\n\}/,
   )?.[1];
-  const systemLightBlock = styles.match(
-    /@media \(prefers-color-scheme: light\)\s*\{\s*:root:not\(\[data-theme\]\)\s*\{([\s\S]*?)\n\s*\}/,
-  )?.[1];
-
   // Assert
   assert.match(lightThemeBlock, /--hero-text:\s*#172033;/);
   assert.match(lightThemeBlock, /--hero-text-muted:\s*#4b5b6c;/);
-  assert.match(systemLightBlock, /--hero-text:\s*#172033;/);
-  assert.match(systemLightBlock, /--hero-text-muted:\s*#4b5b6c;/);
   assert.match(hero, /\.hero-name\s*\{[\s\S]*?color: var\(--hero-text\);/);
   assert.match(
     hero,
-    /class="mt-7 text-xl font-semibold text-hero-text sm:text-2xl"/,
+    /class="text-hero-text mt-7 text-xl font-semibold sm:text-2xl"/,
   );
   assert.match(
     hero,
@@ -581,23 +575,20 @@ test("light-mode hero keeps its image beneath a semantic light overlay", async (
   const lightThemeBlock = styles.match(
     /:root\[data-theme="light"\]\s*\{([\s\S]*?)\n\}/,
   )?.[1];
-  const systemLightBlock = styles.match(
-    /@media \(prefers-color-scheme: light\)\s*\{\s*:root:not\(\[data-theme\]\)\s*\{([\s\S]*?)\n\s*\}/,
-  )?.[1];
-
   // Assert
-  for (const lightTokens of [lightThemeBlock, systemLightBlock]) {
-    assert.match(lightTokens, /--hero-image-opacity:\s*(?!0(?:\.0+)?;)[\d.]+;/);
-    assert.match(lightTokens, /--hero-overlay:\s*linear-gradient\(/);
-    assert.match(lightTokens, /--hero-mobile-overlay:\s*linear-gradient\(/);
-  }
+  assert.match(
+    lightThemeBlock,
+    /--hero-image-opacity:\s*(?!0(?:\.0+)?;)[\d.]+;/,
+  );
+  assert.match(lightThemeBlock, /--hero-overlay:\s*linear-gradient\(/);
+  assert.match(lightThemeBlock, /--hero-mobile-overlay:\s*linear-gradient\(/);
   assert.match(hero, /<div class="hero-overlay"><\/div>/);
   assert.match(hero, /opacity:\s*var\(--hero-image-opacity\);/);
   assert.match(hero, /background:\s*var\(--hero-overlay\);/);
   assert.match(hero, /background:\s*var\(--hero-mobile-overlay\);/);
 });
 
-test("theme toggle stays with the site identity instead of competing with Download CV", async () => {
+test("theme toggle sits subtly at the far right of the main navigation layout", async () => {
   // Arrange
   const navigation = await readFile(navigationComponentUrl, {
     encoding: "utf8",
@@ -606,19 +597,19 @@ test("theme toggle stays with the site identity instead of competing with Downlo
   // Assert
   assert.match(
     navigation,
-    /<div class="flex items-center gap-1">\s*<a[\s\S]*?aria-label="Halvor Ødegård Teigen, home"[\s\S]*?<\/a>\s*<button\s*id="theme-toggle"/,
+    /<div class="section-shell flex h-16 items-center justify-between gap-5">\s*<a[\s\S]*?aria-label="Halvor Ødegård Teigen, home"[\s\S]*?<\/a>\s*<div class="flex items-center gap-1">/,
   );
   assert.match(
     navigation,
-    /id="theme-toggle"[\s\S]*?class="interactive-target text-light-accent hover:bg-light\/8 inline-flex h-11 items-center justify-center rounded-lg transition-colors"[\s\S]*?aria-label="Theme: choose light or dark appearance"[\s\S]*?aria-pressed="false"/,
+    /id="theme-toggle"[\s\S]*?class="interactive-target text-light-accent hover:text-light hover:bg-light\/8 ml-1 inline-flex h-11 items-center justify-center rounded-lg transition-colors"[\s\S]*?aria-label="Theme: dark. Activate to use light theme."[\s\S]*?aria-pressed="true"/,
   );
   assert.match(
     navigation,
-    /<div class="hidden items-center gap-1 lg:flex">[\s\S]*?Download CV[\s\S]*?<\/div>/,
+    /<div class="flex items-center gap-1">[\s\S]*?<div class="hidden items-center gap-1 lg:flex">[\s\S]*?Download CV[\s\S]*?<\/div>[\s\S]*?id="menu-btn"[\s\S]*?id="theme-toggle"[\s\S]*?<\/div>/,
   );
   assert.doesNotMatch(
     navigation,
-    /<div class="flex items-center gap-1">\s*<button\s*id="theme-toggle"[\s\S]*?id="menu-btn"/,
+    /aria-label="Halvor Ødegård Teigen, home"[\s\S]*?<\/a>\s*<button\s*id="theme-toggle"/,
   );
 });
 
@@ -641,10 +632,6 @@ test("primary controls and the hero kicker retain contrast in light mode", async
   const lightThemeBlock = styles.match(
     /:root\[data-theme="light"\]\s*\{([\s\S]*?)\n\}/,
   )?.[1];
-  const systemLightBlock = styles.match(
-    /@media \(prefers-color-scheme: light\)\s*\{\s*:root:not\(\[data-theme\]\)\s*\{([\s\S]*?)\n\s*\}/,
-  )?.[1];
-
   // Act
   const primaryControls = primaryControlComponents.flatMap((component) =>
     [...component.matchAll(/class="[^"]*\bbg-primary\b[^"]*"/g)].map(
@@ -655,12 +642,12 @@ test("primary controls and the hero kicker retain contrast in light mode", async
   // Assert
   assert.match(styles, /--on-accent:\s*#(?:fff|ffffff);/i);
   assert.match(styles, /--color-on-accent:\s*var\(--on-accent\);/);
-  for (const lightTokens of [lightThemeBlock, systemLightBlock]) {
-    assert.match(lightTokens, /--accent:\s*#c64b0c;/i);
-    assert.match(lightTokens, /--accent-hover:\s*#b8400c;/i);
-  }
-  assert.doesNotMatch(lightThemeBlock, /--on-accent:/);
-  assert.doesNotMatch(systemLightBlock, /--on-accent:/);
+  assert.match(lightThemeBlock, /--accent:\s*#f97316;/i);
+  assert.match(lightThemeBlock, /--accent-hover:\s*#ff8a1f;/i);
+  assert.match(lightThemeBlock, /--accent-text:\s*#c64b0c;/i);
+  assert.match(lightThemeBlock, /--accent-text-hover:\s*#b8400c;/i);
+  assert.match(lightThemeBlock, /--focus-ring:\s*#b8400c;/i);
+  assert.match(lightThemeBlock, /--on-accent:\s*#172033;/i);
   assert.equal(primaryControls.length, 7);
   for (const control of primaryControls) {
     assert.match(control, /\btext-on-accent\b/);
@@ -669,7 +656,6 @@ test("primary controls and the hero kicker retain contrast in light mode", async
   assert.match(styles, /--hero-accent:\s*#f97316;/i);
   assert.match(styles, /--color-hero-accent:\s*var\(--hero-accent\);/);
   assert.match(lightThemeBlock, /--hero-accent:\s*#c64b0c;/i);
-  assert.match(systemLightBlock, /--hero-accent:\s*#c64b0c;/i);
   assert.match(hero, /class="section-kicker hero-kicker"/);
   assert.match(
     hero,
@@ -694,4 +680,24 @@ test("theme preference applies a saved choice before rendering", async () => {
 
   // Assert
   assert.equal(document.documentElement.dataset.theme, "light");
+});
+
+test("theme defaults to dark without a saved choice", async () => {
+  // Arrange
+  const html = await readFile(homePageUrl, { encoding: "utf8" });
+  const themeScript = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)]
+    .map((match) => match[1])
+    .find((script) => script.includes("theme-preference"));
+  const document = { documentElement: { dataset: {} } };
+  const localStorage = {
+    getItem: () => null,
+    setItem() {},
+  };
+
+  // Act
+  vm.runInNewContext(themeScript, { document, localStorage, window: {} });
+
+  // Assert
+  assert.match(html, /<html lang="en" data-theme="dark">/);
+  assert.equal(document.documentElement.dataset.theme, "dark");
 });
