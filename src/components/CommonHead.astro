@@ -28,6 +28,17 @@ const gtmId = siteConfig.gtmId;
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="sitemap" href="/sitemap-index.xml" />
 
+  <script is:inline>
+    try {
+      const themePreference = localStorage.getItem("theme-preference");
+
+      if (themePreference === "light" || themePreference === "dark") {
+        document.documentElement.dataset.theme = themePreference;
+      }
+    } catch {
+      // Keep the system preference when storage is unavailable.
+    }
+  </script>
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:type" content="website" />
   <meta property="og:title" content={title} />
