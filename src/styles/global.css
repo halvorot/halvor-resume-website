@@ -34,6 +34,7 @@
   --surface-raised: #12151b;
   --text-primary: #f3f4f6;
   --text-muted: #b6bdc8;
+  --logo-ring: #ffffff;
   --hero-text: #f3f4f6;
   --hero-text-muted: #b6bdc8;
   --hero-accent: #f97316;
@@ -83,6 +84,7 @@
   --surface-raised: #eef2f7;
   --text-primary: #172033;
   --text-muted: #4b5b6c;
+  --logo-ring: #172033;
   --hero-text: #172033;
   --hero-text-muted: #4b5b6c;
   --hero-accent: #c64b0c;
