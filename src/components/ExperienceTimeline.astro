@@ -10,61 +10,59 @@ const orderedExperiences = [...experiences].sort(
 ---
 
 <ol class="mt-14">
-  {
-    orderedExperiences.map((experience) => {
-      const {
-        startDate,
-        endDate,
-        heading,
-        subHeading,
-        consultingFirm,
-        description,
-        tags,
-      } = experience.data;
-      const dateLabel =
-        endDate === undefined
-          ? `${startDate.getFullYear()}–Present`
-          : startDate.getFullYear() === endDate.getFullYear()
-            ? `${startDate.getFullYear()}`
-            : `${startDate.getFullYear()}–${endDate.getFullYear()}`;
+  {orderedExperiences.map((experience) => {
+    const {
+      startDate,
+      endDate,
+      heading,
+      subHeading,
+      consultingFirm,
+      description,
+      tags,
+    } = experience.data;
+    const dateLabel =
+      endDate === undefined
+        ? `${startDate.getFullYear()}–Present`
+        : startDate.getFullYear() === endDate.getFullYear()
+          ? `${startDate.getFullYear()}`
+          : `${startDate.getFullYear()}–${endDate.getFullYear()}`;
 
-      return (
-        <li class="experience-entry border-light-accent/10 relative grid border-t py-9 md:grid-cols-[10rem_1fr] md:gap-10">
-          <p class="text-primary-text mb-4 text-sm font-bold tracking-[0.08em] md:mb-0 md:pt-1">
-            {dateLabel}
-          </p>
-          <article>
-            <h3 class="text-2xl font-semibold tracking-tight">{heading}</h3>
-            <p class="text-light mt-1 font-medium">{subHeading}</p>
-            {consultingFirm && (
-              <p class="text-light-accent mt-2 flex items-center gap-2 text-sm font-medium">
-                <span
-                  class="bg-primary/70 h-1.5 w-1.5 shrink-0 rounded-full"
-                  aria-hidden="true"
-                />
-                Consulting project at {consultingFirm}
-              </p>
-            )}
-            <p class="text-light-accent mt-4 max-w-[58rem] leading-7">
-              {description}
+    return (
+      <li class="experience-entry border-light-accent/10 relative grid border-t py-9 md:grid-cols-[10rem_1fr] md:gap-10">
+        <p class="text-primary-text mb-4 text-sm font-bold tracking-[0.08em] md:mb-0 md:pt-1">
+          {dateLabel}
+        </p>
+        <article>
+          <h3 class="text-2xl font-semibold tracking-tight">{heading}</h3>
+          <p class="text-light mt-1 font-medium">{subHeading}</p>
+          {consultingFirm && (
+            <p class="text-light-accent mt-2 flex items-center gap-2 text-sm font-medium">
+              <span
+                class="bg-primary/70 h-1.5 w-1.5 shrink-0 rounded-full"
+                aria-hidden="true"
+              />
+              Consulting project at {consultingFirm}
             </p>
-            {tags && (
-              <ul
-                class="mt-5 flex flex-wrap gap-2"
-                aria-label={`${heading} technologies and areas`}
-              >
-                {tags.map((tag) => (
-                  <li>
-                    <TagTile text={tag} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </article>
-        </li>
-      );
-    })
-  }
+          )}
+          <p class="text-light-accent mt-4 max-w-[58rem] leading-7">
+            {description}
+          </p>
+          {tags && (
+            <ul
+              class="mt-5 flex flex-wrap gap-2"
+              aria-label={`${heading} technologies and areas`}
+            >
+              {tags.map((tag) => (
+                <li>
+                  <TagTile text={tag} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </article>
+      </li>
+    );
+  })}
 </ol>
 
 <style>
