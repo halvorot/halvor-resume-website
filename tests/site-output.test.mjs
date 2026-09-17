@@ -597,7 +597,7 @@ test("light-mode hero keeps its image beneath a semantic light overlay", async (
   assert.match(hero, /background:\s*var\(--hero-mobile-overlay\);/);
 });
 
-test("theme toggle moves into the mobile menu and aligns to the desktop edge", async () => {
+test("theme toggle keeps a minimum gap from the desktop action", async () => {
   // Arrange
   const navigation = await readFile(navigationComponentUrl, {
     encoding: "utf8",
@@ -616,7 +616,7 @@ test("theme toggle moves into the mobile menu and aligns to the desktop edge", a
   );
   assert.match(
     navigation,
-    /data-theme-toggle[\s\S]*?absolute top-2 right-3 hidden h-11 cursor-pointer[\s\S]*?lg:inline-flex/,
+    /Download CV[\s\S]*?<\/a>\s*<\/div>[\s\S]*?class="theme-toggle-desktop/,
   );
   assert.match(
     navigation,
@@ -624,7 +624,11 @@ test("theme toggle moves into the mobile menu and aligns to the desktop edge", a
   );
   assert.match(
     navigation,
-    /\.navigation-shell\s*\{[\s\S]*?padding-right:\s*max\([\s\S]*?var\(--space-gutter\)[\s\S]*?100vw - var\(--container\)/,
+    /\.navigation-shell\s*\{[\s\S]*?padding-right:\s*clamp\(0rem, calc\(40\.125rem - 50vw\), 1\.625rem\);/,
+  );
+  assert.match(
+    navigation,
+    /\.theme-toggle-desktop\s*\{[\s\S]*?top:\s*50%;[\s\S]*?right:\s*0\.625rem;[\s\S]*?transform:\s*translateY\(-50%\);/,
   );
 });
 

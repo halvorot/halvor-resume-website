@@ -113,7 +113,7 @@ import { navigation } from "../data/navigation";
   <button
     type="button"
     data-theme-toggle
-    class="interactive-target text-light-accent hover:text-light hover:bg-light/8 absolute top-2 right-3 hidden h-11 cursor-pointer items-center justify-center rounded-lg transition-colors lg:inline-flex"
+    class="theme-toggle-desktop interactive-target text-light-accent hover:text-light hover:bg-light/8 h-11 cursor-pointer items-center justify-center rounded-lg transition-colors"
     aria-label="Theme: dark. Activate to use light theme."
     aria-pressed="true"
   >
@@ -122,14 +122,21 @@ import { navigation } from "../data/navigation";
 </nav>
 
 <style>
+  .theme-toggle-desktop {
+    display: none;
+  }
+
   @media (min-width: 64rem) {
     .navigation-shell {
-      padding-right: max(
-        0rem,
-        calc(
-          4rem - max(var(--space-gutter), calc((100vw - var(--container)) / 2))
-        )
-      );
+      padding-right: clamp(0rem, calc(40.125rem - 50vw), 1.625rem);
+    }
+
+    .theme-toggle-desktop {
+      position: absolute;
+      top: 50%;
+      right: 0.625rem;
+      display: inline-flex;
+      transform: translateY(-50%);
     }
   }
 
