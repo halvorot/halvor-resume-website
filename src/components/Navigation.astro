@@ -8,7 +8,9 @@ import { navigation } from "../data/navigation";
   aria-label="Main navigation"
   class="border-light-accent/10 bg-dark-blue/90 sticky top-0 z-50 border-b backdrop-blur-xl"
 >
-  <div class="section-shell flex h-16 items-center justify-between gap-5">
+  <div
+    class="navigation-shell section-shell flex h-16 items-center justify-between gap-5"
+  >
     <a
       href="/"
       class="interactive-target text-light inline-flex h-11 items-center gap-3 rounded-lg"
@@ -22,22 +24,26 @@ import { navigation } from "../data/navigation";
 
     <div class="flex items-center gap-1">
       <div class="hidden items-center gap-1 lg:flex">
-        {navigation.map((item) => (
-          <a
-            href={item.path}
-            data-section-link={item.path.split("#")[1]}
-            class="interactive-target text-light-accent hover:text-light inline-flex h-11 items-center rounded-lg px-4 text-sm font-semibold transition-colors"
-          >
-            {item.name}
-          </a>
-        ))}
+        {
+          navigation.map((item) => (
+            <a
+              href={item.path}
+              data-section-link={item.path.split("#")[1]}
+              class="interactive-target text-light-accent hover:text-light inline-flex h-11 items-center rounded-lg px-4 text-sm font-semibold transition-colors"
+            >
+              {item.name}
+            </a>
+          ))
+        }
         <a
           href={siteConfig.links.cv}
           target="_blank"
           rel="noreferrer"
           class="interactive-target group ml-3 inline-flex h-11 items-center justify-center rounded-lg text-sm font-bold"
         >
-          <span class="bg-primary text-on-accent group-hover:bg-primary-hover inline-flex h-9 items-center rounded-md px-4 transition-colors">
+          <span
+            class="bg-primary text-on-accent group-hover:bg-primary-hover inline-flex h-9 items-center rounded-md px-4 transition-colors"
+          >
             Download CV
           </span>
         </a>
@@ -52,15 +58,6 @@ import { navigation } from "../data/navigation";
         <span class="sr-only">Open main menu</span>
         <Icon name="bi:list" class="h-7 w-7" />
       </button>
-      <button
-        id="theme-toggle"
-        type="button"
-        class="interactive-target text-light-accent hover:text-light hover:bg-light/8 ml-1 inline-flex h-11 items-center justify-center rounded-lg transition-colors"
-        aria-label="Theme: dark. Activate to use light theme."
-        aria-pressed="true"
-      >
-        <Icon name="bi:circle-half" class="h-4 w-4" aria-hidden="true" />
-      </button>
     </div>
   </div>
 
@@ -69,16 +66,20 @@ import { navigation } from "../data/navigation";
     class="border-light-accent/10 bg-dark-blue hidden border-t lg:hidden"
   >
     <div class="section-shell flex flex-col py-3">
-      {navigation.map((item) => (
-        <a
-          href={item.path}
-          data-section-link={item.path.split("#")[1]}
-          class="interactive-target text-light-accent hover:text-light hover:bg-light/5 flex items-center rounded-lg px-3 font-semibold transition-colors"
-        >
-          {item.name}
-        </a>
-      ))}
-      <div class="border-light-accent/10 mt-2 grid gap-2 border-t pt-4 sm:grid-cols-2">
+      {
+        navigation.map((item) => (
+          <a
+            href={item.path}
+            data-section-link={item.path.split("#")[1]}
+            class="interactive-target text-light-accent hover:text-light hover:bg-light/5 flex items-center rounded-lg px-3 font-semibold transition-colors"
+          >
+            {item.name}
+          </a>
+        ))
+      }
+      <div
+        class="border-light-accent/10 mt-2 grid gap-2 border-t pt-4 sm:grid-cols-2"
+      >
         <a
           href={siteConfig.links.linkedin}
           target="_blank"
@@ -96,19 +97,51 @@ import { navigation } from "../data/navigation";
           Download CV
         </a>
       </div>
+      <button
+        type="button"
+        data-theme-toggle
+        class="interactive-target text-light-accent hover:text-light hover:bg-light/8 mt-2 flex cursor-pointer items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold transition-colors"
+        aria-label="Theme: dark. Activate to use light theme."
+        aria-pressed="true"
+      >
+        <Icon name="bi:circle-half" class="h-4 w-4" aria-hidden="true" />
+        <span>Switch theme</span>
+      </button>
     </div>
   </div>
+
+  <button
+    type="button"
+    data-theme-toggle
+    class="interactive-target text-light-accent hover:text-light hover:bg-light/8 absolute top-2 right-3 hidden h-11 cursor-pointer items-center justify-center rounded-lg transition-colors lg:inline-flex"
+    aria-label="Theme: dark. Activate to use light theme."
+    aria-pressed="true"
+  >
+    <Icon name="bi:circle-half" class="h-4 w-4" aria-hidden="true" />
+  </button>
 </nav>
 
 <style>
+  @media (min-width: 64rem) {
+    .navigation-shell {
+      padding-right: max(
+        0rem,
+        calc(
+          4rem - max(var(--space-gutter), calc((100vw - var(--container)) / 2))
+        )
+      );
+    }
+  }
+
   [data-section-link][aria-current="location"] {
     color: var(--color-primary-text);
   }
 </style>
 
 <script>
-  const themeToggle =
-    document.querySelector<HTMLButtonElement>("#theme-toggle");
+  const themeToggles = document.querySelectorAll<HTMLButtonElement>(
+    "[data-theme-toggle]",
+  );
   const themeStorageKey = "theme-preference";
 
   const getTheme = () => document.documentElement.dataset.theme ?? "dark";
@@ -116,26 +149,30 @@ import { navigation } from "../data/navigation";
     const theme = getTheme();
     const nextTheme = theme === "dark" ? "light" : "dark";
 
-    themeToggle?.setAttribute("aria-pressed", String(theme === "dark"));
-    themeToggle?.setAttribute(
-      "aria-label",
-      `Theme: ${theme}. Activate to use ${nextTheme} theme.`,
-    );
+    themeToggles.forEach((themeToggle) => {
+      themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+      themeToggle.setAttribute(
+        "aria-label",
+        `Theme: ${theme}. Activate to use ${nextTheme} theme.`,
+      );
+    });
   };
 
-  if (themeToggle) updateThemeToggle();
-  themeToggle?.addEventListener("click", () => {
-    const nextTheme = getTheme() === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = nextTheme;
+  updateThemeToggle();
+  themeToggles.forEach((themeToggle) =>
+    themeToggle.addEventListener("click", () => {
+      const nextTheme = getTheme() === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = nextTheme;
 
-    try {
-      localStorage.setItem(themeStorageKey, nextTheme);
-    } catch {
-      // Continue without persistence when storage is unavailable.
-    }
+      try {
+        localStorage.setItem(themeStorageKey, nextTheme);
+      } catch {
+        // Continue without persistence when storage is unavailable.
+      }
 
-    updateThemeToggle();
-  });
+      updateThemeToggle();
+    }),
+  );
 
   const menuButton = document.querySelector<HTMLButtonElement>("#menu-btn");
   const menu = document.querySelector<HTMLElement>("#mobile-menu");

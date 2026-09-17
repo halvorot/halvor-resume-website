@@ -75,7 +75,7 @@
 :root[data-theme="light"] {
   --accent: #f97316;
   --accent-hover: #ff8a1f;
-  --accent-text: #c64b0c;
+  --accent-text: #f97316;
   --accent-text-hover: #b8400c;
   --focus-ring: #b8400c;
   --on-accent: #172033;

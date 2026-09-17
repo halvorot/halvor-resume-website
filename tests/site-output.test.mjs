@@ -56,9 +56,10 @@ test("navigation clears the active section when returning to the hero", async ()
   }
   const document = {
     querySelector: () => null,
-    querySelectorAll: () => links,
+    querySelectorAll: (selector) =>
+      selector === "[data-theme-toggle]" ? [] : links,
     getElementById: (id) => sections.find((section) => section.id === id),
-    documentElement: { addEventListener() {} },
+    documentElement: { addEventListener() {}, dataset: {} },
     addEventListener() {},
   };
   vm.runInNewContext(compiledScript, {
@@ -112,9 +113,10 @@ test("navigation syncs the section hash with the active section", async () => {
   const replacedUrls = [];
   const document = {
     querySelector: () => null,
-    querySelectorAll: () => [link],
+    querySelectorAll: (selector) =>
+      selector === "[data-theme-toggle]" ? [] : [link],
     getElementById: () => section,
-    documentElement: { addEventListener() {} },
+    documentElement: { addEventListener() {}, dataset: {} },
     addEventListener() {},
   };
   const window = {
@@ -184,9 +186,14 @@ test("navigation activates contact at the bottom of the page", async () => {
   }
   const document = {
     querySelector: () => null,
-    querySelectorAll: () => links,
+    querySelectorAll: (selector) =>
+      selector === "[data-theme-toggle]" ? [] : links,
     getElementById: (id) => sections.find((section) => section.id === id),
-    documentElement: { addEventListener() {}, scrollHeight: 1_000 },
+    documentElement: {
+      addEventListener() {},
+      dataset: {},
+      scrollHeight: 1_000,
+    },
     addEventListener() {},
   };
   const window = {
@@ -588,28 +595,34 @@ test("light-mode hero keeps its image beneath a semantic light overlay", async (
   assert.match(hero, /background:\s*var\(--hero-mobile-overlay\);/);
 });
 
-test("theme toggle sits subtly at the far right of the main navigation layout", async () => {
+test("theme toggle moves into the mobile menu and aligns to the desktop edge", async () => {
   // Arrange
   const navigation = await readFile(navigationComponentUrl, {
     encoding: "utf8",
   });
 
+  // Act
+
   // Assert
   assert.match(
     navigation,
-    /<div class="section-shell flex h-16 items-center justify-between gap-5">\s*<a[\s\S]*?aria-label="Halvor Ødegård Teigen, home"[\s\S]*?<\/a>\s*<div class="flex items-center gap-1">/,
+    /<div\s+class="navigation-shell section-shell flex h-16 items-center justify-between gap-5"\s*>\s*<a[\s\S]*?aria-label="Halvor Ødegård Teigen, home"[\s\S]*?<\/a>\s*<div class="flex items-center gap-1">/,
   );
   assert.match(
     navigation,
-    /id="theme-toggle"[\s\S]*?class="interactive-target text-light-accent hover:text-light hover:bg-light\/8 ml-1 inline-flex h-11 items-center justify-center rounded-lg transition-colors"[\s\S]*?aria-label="Theme: dark. Activate to use light theme."[\s\S]*?aria-pressed="true"/,
+    /id="mobile-menu"[\s\S]*?data-theme-toggle[\s\S]*?flex cursor-pointer[\s\S]*?>[\s\S]*?<span>Switch theme<\/span>/,
   );
   assert.match(
     navigation,
-    /<div class="flex items-center gap-1">[\s\S]*?<div class="hidden items-center gap-1 lg:flex">[\s\S]*?Download CV[\s\S]*?<\/div>[\s\S]*?id="menu-btn"[\s\S]*?id="theme-toggle"[\s\S]*?<\/div>/,
+    /data-theme-toggle[\s\S]*?absolute top-2 right-3 hidden h-11 cursor-pointer[\s\S]*?lg:inline-flex/,
   );
-  assert.doesNotMatch(
+  assert.match(
     navigation,
-    /aria-label="Halvor Ødegård Teigen, home"[\s\S]*?<\/a>\s*<button\s*id="theme-toggle"/,
+    /querySelectorAll<HTMLButtonElement>\(\s*"\[data-theme-toggle\]",\s*\)/,
+  );
+  assert.match(
+    navigation,
+    /\.navigation-shell\s*\{[\s\S]*?padding-right:\s*max\([\s\S]*?var\(--space-gutter\)[\s\S]*?100vw - var\(--container\)/,
   );
 });
 
