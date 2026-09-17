@@ -20,7 +20,7 @@ const certificationCount = (await getCollection("certifications")).length;
 
   <div class="section-shell relative z-10 flex min-h-[clamp(38rem,78vh,45rem)] items-center py-20">
     <div class="max-w-[38rem]">
-      <p class="section-kicker hero-kicker">Hi, I’m</p>
+      <p class="section-kicker">Hi, I’m</p>
       <h1 id="hero-title" class="hero-name">
         Halvor Ødegård Teigen
       </h1>
@@ -123,10 +123,6 @@ const certificationCount = (await getCollection("certifications")).length;
     letter-spacing: -0.055em;
     line-height: 0.98;
     text-wrap: balance;
-  }
-
-  .hero-kicker {
-    color: var(--hero-accent);
   }
 
   @media (max-width: 47.99rem) {

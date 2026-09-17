@@ -22,6 +22,8 @@ const heroComponentUrl = new URL(
   import.meta.url,
 );
 const globalStylesUrl = new URL("../src/styles/global.css", import.meta.url);
+const logoUrl = new URL("../src/icons/h-logo.svg", import.meta.url);
+const faviconUrl = new URL("../public/favicon.svg", import.meta.url);
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -626,7 +628,7 @@ test("theme toggle moves into the mobile menu and aligns to the desktop edge", a
   );
 });
 
-test("primary controls and the hero kicker retain contrast across themes", async () => {
+test("primary controls and section kickers retain contrast across themes", async () => {
   // Arrange
   const primaryControlComponentUrls = [
     new URL("../src/layouts/MainLayout.astro", import.meta.url),
@@ -635,13 +637,16 @@ test("primary controls and the hero kicker retain contrast across themes", async
     heroComponentUrl,
     new URL("../src/components/CookieConsent.astro", import.meta.url),
   ];
-  const [styles, hero, ...primaryControlComponents] = await Promise.all([
-    readFile(globalStylesUrl, { encoding: "utf8" }),
-    readFile(heroComponentUrl, { encoding: "utf8" }),
-    ...primaryControlComponentUrls.map((url) =>
-      readFile(url, { encoding: "utf8" }),
-    ),
-  ]);
+  const [styles, hero, logo, favicon, ...primaryControlComponents] =
+    await Promise.all([
+      readFile(globalStylesUrl, { encoding: "utf8" }),
+      readFile(heroComponentUrl, { encoding: "utf8" }),
+      readFile(logoUrl, { encoding: "utf8" }),
+      readFile(faviconUrl, { encoding: "utf8" }),
+      ...primaryControlComponentUrls.map((url) =>
+        readFile(url, { encoding: "utf8" }),
+      ),
+    ]);
   const lightThemeBlock = styles.match(
     /:root\[data-theme="light"\]\s*\{([\s\S]*?)\n\}/,
   )?.[1];
@@ -653,11 +658,15 @@ test("primary controls and the hero kicker retain contrast across themes", async
   );
 
   // Assert
+  assert.match(styles, /--brand-primary:\s*#f97316;/i);
+  assert.match(styles, /--accent:\s*var\(--brand-primary\);/);
+  assert.match(logo, /fill="var\(--brand-primary, #f97316\)"/i);
+  assert.match(favicon, /fill="#f97316"/i);
   assert.match(styles, /--on-accent:\s*#0d1118;/i);
   assert.match(styles, /--color-on-accent:\s*var\(--on-accent\);/);
-  assert.match(lightThemeBlock, /--accent:\s*#f97316;/i);
+  assert.match(lightThemeBlock, /--accent:\s*var\(--brand-primary\);/);
   assert.match(lightThemeBlock, /--accent-hover:\s*#ff8a1f;/i);
-  assert.match(lightThemeBlock, /--accent-text:\s*#c64b0c;/i);
+  assert.match(lightThemeBlock, /--accent-text:\s*var\(--brand-primary\);/);
   assert.match(lightThemeBlock, /--accent-text-hover:\s*#b8400c;/i);
   assert.match(lightThemeBlock, /--focus-ring:\s*#b8400c;/i);
   assert.match(lightThemeBlock, /--on-accent:\s*#172033;/i);
@@ -666,14 +675,9 @@ test("primary controls and the hero kicker retain contrast across themes", async
     assert.match(control, /\btext-on-accent\b/);
     assert.doesNotMatch(control, /\btext-dark\b/);
   }
-  assert.match(styles, /--hero-accent:\s*#f97316;/i);
-  assert.match(styles, /--color-hero-accent:\s*var\(--hero-accent\);/);
-  assert.match(lightThemeBlock, /--hero-accent:\s*#c64b0c;/i);
-  assert.match(hero, /class="section-kicker hero-kicker"/);
-  assert.match(
-    hero,
-    /\.hero-kicker\s*\{[\s\S]*?color:\s*var\(--hero-accent\);/,
-  );
+  assert.match(hero, /<p class="section-kicker">Hi, I’m<\/p>/);
+  assert.doesNotMatch(styles, /hero-accent/);
+  assert.doesNotMatch(hero, /hero-kicker/);
 });
 
 test("theme preference applies a saved choice before rendering", async () => {

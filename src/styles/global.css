@@ -15,7 +15,6 @@
   --color-light-accent: var(--text-muted);
   --color-hero-text: var(--hero-text);
   --color-hero-text-muted: var(--hero-text-muted);
-  --color-hero-accent: var(--hero-accent);
   --color-transparent: transparent;
   --color-current: currentColor;
   --font-sans: "Manrope Variable", system-ui, sans-serif;
@@ -23,9 +22,10 @@
 }
 
 :root {
-  --accent: #f97316;
+  --brand-primary: #f97316;
+  --accent: var(--brand-primary);
   --accent-hover: #ff8a1f;
-  --accent-text: #f97316;
+  --accent-text: var(--brand-primary);
   --accent-text-hover: #ff8a1f;
   --focus-ring: #ff8a1f;
   --on-accent: #0d1118;
@@ -37,7 +37,6 @@
   --logo-ring: #ffffff;
   --hero-text: #f3f4f6;
   --hero-text-muted: #b6bdc8;
-  --hero-accent: #f97316;
   --hero-background: #0d1118;
   --hero-image-opacity: 1;
   --hero-overlay:
@@ -73,9 +72,9 @@
 }
 
 :root[data-theme="light"] {
-  --accent: #f97316;
+  --accent: var(--brand-primary);
   --accent-hover: #ff8a1f;
-  --accent-text: #f97316;
+  --accent-text: var(--brand-primary);
   --accent-text-hover: #b8400c;
   --focus-ring: #b8400c;
   --on-accent: #172033;
@@ -87,7 +86,6 @@
   --logo-ring: #172033;
   --hero-text: #172033;
   --hero-text-muted: #4b5b6c;
-  --hero-accent: #c64b0c;
   --hero-background: #f8fafc;
   --hero-image-opacity: 0.91;
   --hero-overlay:
