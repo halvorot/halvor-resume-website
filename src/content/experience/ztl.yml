@@ -5,12 +5,4 @@ description: >
   Building robust and secure B2B payment services in Kotlin on Azure.
   Also serving as security champion for the team.
 tags:
-  [
-    "Kotlin",
-    "Kubernetes",
-    "Azure",
-    "Fintech",
-    "B2B payments",
-    "Security",
-    "AI",
-  ]
+  ["Kotlin", "Kubernetes", "Azure", "Fintech", "B2B payments", "Security", "AI"]

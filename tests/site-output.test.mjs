@@ -90,6 +90,31 @@ test("navigation clears the active section when returning to the hero", async ()
   assert.equal(links[0].attributes.has("aria-current"), false);
 });
 
+test("mobile navigation overlays content and retains dismissal controls", async () => {
+  const source = await readFile(navigationComponentUrl, { encoding: "utf8" });
+
+  assert.match(
+    source,
+    /<nav[\s\S]*?class="[^"\n]*\brelative\b[^"\n]*"/,
+    "the navigation establishes the positioning context for its menu",
+  );
+  assert.match(
+    source,
+    /id="mobile-menu"[\s\S]*?class="[^"\n]*\babsolute\b[^"\n]*\btop-full\b[^"\n]*"/,
+    "the mobile menu is positioned outside document flow below the header",
+  );
+  assert.match(
+    source,
+    /document\.documentElement\.addEventListener\("click", \(\) => setMenuOpen\(false\)\)/,
+    "a click outside the navigation closes the mobile menu",
+  );
+  assert.match(
+    source,
+    /event\.key === "Escape"[\s\S]*?setMenuOpen\(false\)/,
+    "Escape closes the mobile menu",
+  );
+});
+
 test("navigation syncs the section hash with the active section", async () => {
   // Arrange
   const source = await readFile(navigationComponentUrl, { encoding: "utf8" });
