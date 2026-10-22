@@ -91,6 +91,15 @@ import { siteConfig } from "../config/site";
       </p>
       <div class="flex items-center gap-2">
         <a
+          href={siteConfig.links.cv}
+          target="_blank"
+          rel="noreferrer"
+          class="interactive-target text-light hover:text-primary-text-hover mr-2 inline-flex items-center gap-2 rounded-sm underline underline-offset-4 transition-colors"
+        >
+          Download CV
+          <Icon name="bi:download" class="h-4 w-4" aria-hidden="true" />
+        </a>
+        <a
           href={siteConfig.links.linkedin}
           target="_blank"
           rel="noreferrer"

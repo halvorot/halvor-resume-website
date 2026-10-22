@@ -31,24 +31,13 @@ import { navigation } from "../data/navigation";
             {item.name}
           </a>
         ))}
-        <div class="ml-3 flex items-center gap-3">
-          <a
-            href="/#contact"
-            data-section-link="contact"
-            class="interactive-target bg-primary text-on-accent hover:bg-primary-hover inline-flex items-center justify-center rounded-lg px-4 text-sm font-bold transition-colors"
-          >
-            Get in touch
-          </a>
-          <a
-            href={siteConfig.links.cv}
-            target="_blank"
-            rel="noreferrer"
-            class="interactive-target secondary-action inline-flex items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold"
-          >
-            Download CV
-            <Icon name="bi:download" class="h-4 w-4" aria-hidden="true" />
-          </a>
-        </div>
+        <a
+          href="/#contact"
+          data-section-link="contact"
+          class="interactive-target bg-primary text-on-accent hover:bg-primary-hover ml-3 inline-flex items-center justify-center rounded-lg px-4 text-sm font-bold transition-colors"
+        >
+          Get in touch
+        </a>
       </div>
       <button
         id="menu-btn"
@@ -77,22 +66,13 @@ import { navigation } from "../data/navigation";
           {item.name}
         </a>
       ))}
-      <div class="border-light-accent/10 mt-2 grid gap-2 border-t pt-4 sm:grid-cols-2">
+      <div class="border-light-accent/10 mt-2 grid border-t pt-4">
         <a
           href="/#contact"
           data-section-link="contact"
           class="interactive-target bg-primary text-on-accent hover:bg-primary-hover inline-flex items-center justify-center rounded-lg px-4 text-sm font-bold transition-colors"
         >
           Get in touch
-        </a>
-        <a
-          href={siteConfig.links.cv}
-          target="_blank"
-          rel="noreferrer"
-          class="interactive-target secondary-action inline-flex items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold"
-        >
-          Download CV
-          <Icon name="bi:download" class="h-4 w-4" aria-hidden="true" />
         </a>
       </div>
       <button

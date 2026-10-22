@@ -641,7 +641,7 @@ test("theme toggle keeps a minimum gap from the desktop action", async () => {
   );
   assert.match(
     navigation,
-    /Download CV[\s\S]*?<\/a>\s*<\/div>[\s\S]*?class="theme-toggle-desktop/,
+    /Get in touch[\s\S]*?<\/a>\s*<\/div>[\s\S]*?class="theme-toggle-desktop/,
   );
   assert.match(
     navigation,
