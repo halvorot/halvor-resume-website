@@ -31,16 +31,24 @@ import { navigation } from "../data/navigation";
             {item.name}
           </a>
         ))}
-        <a
-          href={siteConfig.links.cv}
-          target="_blank"
-          rel="noreferrer"
-          class="interactive-target group ml-3 inline-flex h-11 items-center justify-center rounded-lg text-sm font-bold"
-        >
-          <span class="bg-primary text-on-accent group-hover:bg-primary-hover inline-flex h-9 items-center rounded-md px-4 transition-colors">
+        <div class="ml-3 flex items-center gap-3">
+          <a
+            href="/#contact"
+            data-section-link="contact"
+            class="interactive-target bg-primary text-on-accent hover:bg-primary-hover inline-flex items-center justify-center rounded-lg px-4 text-sm font-bold transition-colors"
+          >
+            Get in touch
+          </a>
+          <a
+            href={siteConfig.links.cv}
+            target="_blank"
+            rel="noreferrer"
+            class="interactive-target secondary-action inline-flex items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold"
+          >
             Download CV
-          </span>
-        </a>
+            <Icon name="bi:download" class="h-4 w-4" aria-hidden="true" />
+          </a>
+        </div>
       </div>
       <button
         id="menu-btn"
@@ -71,20 +79,20 @@ import { navigation } from "../data/navigation";
       ))}
       <div class="border-light-accent/10 mt-2 grid gap-2 border-t pt-4 sm:grid-cols-2">
         <a
-          href={siteConfig.links.linkedin}
-          target="_blank"
-          rel="noreferrer"
-          class="interactive-target border-light-accent/15 text-light hover:border-primary/50 inline-flex items-center justify-center rounded-lg border px-4 text-sm font-semibold transition-colors"
+          href="/#contact"
+          data-section-link="contact"
+          class="interactive-target bg-primary text-on-accent hover:bg-primary-hover inline-flex items-center justify-center rounded-lg px-4 text-sm font-bold transition-colors"
         >
-          LinkedIn
+          Get in touch
         </a>
         <a
           href={siteConfig.links.cv}
           target="_blank"
           rel="noreferrer"
-          class="interactive-target bg-primary text-on-accent hover:bg-primary-hover inline-flex items-center justify-center rounded-lg px-4 text-sm font-bold transition-colors"
+          class="interactive-target secondary-action inline-flex items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold"
         >
           Download CV
+          <Icon name="bi:download" class="h-4 w-4" aria-hidden="true" />
         </a>
       </div>
       <button
@@ -130,7 +138,7 @@ import { navigation } from "../data/navigation";
     }
   }
 
-  [data-section-link][aria-current="location"] {
+  [data-section-link][aria-current="location"]:not(.bg-primary) {
     color: var(--color-primary-text);
   }
 </style>

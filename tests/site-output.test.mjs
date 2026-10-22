@@ -275,7 +275,7 @@ test("home page keeps ordered landmarks and editorial content", async () => {
   );
   assert.match(html, /Hi, I(?:&#39;|’)m/);
   assert.match(html, />View experience</);
-  assert.match(html, /href="#contact"[^>]*>\s*Contact\s*</);
+  assert.match(html, /href="#contact"[^>]*>\s*Get in touch\s*</);
   assert.match(html, /aria-label="Professional overview"/);
   assert.match(html, /Kotlin · Platform · DevEx/);
 });

@@ -127,7 +127,8 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-section[id] {
+section[id],
+footer[id] {
   scroll-margin-top: 7rem;
 }
 
