@@ -468,7 +468,7 @@ test("contact offers selectable popup booking types", async () => {
   assert.match(html, /aria-controls="call-type-menu"/);
   assert.match(html, /aria-expanded="false"/);
   assert.match(html, /30 minutes · Free/);
-  assert.match(html, /1 hour · NOK 1,200/);
+  assert.match(html, /1 hour · NOK 1,600/);
   assert.equal(embedScripts.length, 1);
   assert.match(embedScripts[0][0], /\basync(?:="")?/);
   assert.match(html, />\s*LinkedIn\s*</);
